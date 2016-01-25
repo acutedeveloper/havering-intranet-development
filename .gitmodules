@@ -1,0 +1,3 @@
+[submodule "wp-content/themes/havering-intranet/library"]
+	path = wp-content/themes/havering-intranet/library
+	url = git@github.com:acutedeveloper/havering-intranet-html.git
