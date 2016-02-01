@@ -1,0 +1,55 @@
+msgid ""
+msgstr "MIME-Version: 1.0\n"
+
+#. Name.
+msgid "wp_nav_menu Extended!"
+msgstr ""
+
+#. Short description.
+msgid "Adds missing functionality to the native wp_nav_menu() function"
+msgstr ""
+
+#. Found in description header.
+msgid "Sample Usage"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "Add missing functionality to the native wp_nav_menu() function!"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "With this plugin you can now use the following options in addition to the default options of <a href=\"http://codex.wordpress.org/Function_Reference/wp_nav_menu\">wp_nav_menu</a>:"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>level</strong> : (integer) (required for this plugin to work) The level of the navigation menu to show. If no child_of parameter is passed, it shows all the items of this level"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "<strong>child_of</strong> : (string|integer) (optional) Either the title or menu item ID of the parent in the menu whose direct children are to be shown"
+msgstr ""
+
+#. Found in description paragraph.
+msgid ""
+"$defaults = array(\n"
+"    'theme_location'  =&gt; 'main_menu',\n"
+"    'level'  =&gt; 2,\n"
+"    'child_of'  =&gt; 'About Us',\n"
+");"
+msgstr ""
+
+#. Found in description paragraph.
+msgid "wp_nav_menu( $defaults );"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Upload the wp-nav-menu-extended folder to the /wp-content/plugins/ directory"
+msgstr ""
+
+#. Found in installation list item.
+msgid "Activate the wp_nav_menu Extended! plugin through the 'Plugins' menu in WordPress"
+msgstr ""
+
+#. Found in installation list item.
+msgid "You can now use the new options in your code!"
+msgstr ""
