@@ -44,9 +44,11 @@ function enqueue_and_register_my_scripts()
 
 
 require_once CPT_PLUGIN_DIR . 'includes/class-hi-nav-menu-widget.php';
+require_once CPT_PLUGIN_DIR . 'includes/class-hi-archives-widget.php';
 
 function hi_register_widget() {
-	register_widget('HI_Nav_Menu_Widget');
+  register_widget('HI_Nav_Menu_Widget');
+  register_widget('HI_Widget_Archives');
 }
 
 add_action( 'widgets_init', 'hi_register_widget');
