@@ -1,20 +1,14 @@
+<?php
+/*
+ Template Name: Intranet Menu page
+ *
+*/
+?>
 
-<div id="breadcrumbs">
-  <div class="container">
-    <?php echo get_query_var('tax_id'); ?>
-    <ul>
-      <li><a href="#">Grandparent</a></li>
-      <li><a href="#">Parent</a></li>
-      <li><a href="#">Child</a></li>
-      <li><a href="#">Grandchild</a></li>
-      <li>Great-Grandchild</li>
-    </ul>
-  </div>
-</div>
+<?php get_header(); ?>
 
 <div class="one-up-grid">
   <div id="content-navigation">
-
     <?php
 
         wp_nav_menu( array('theme_location'=>'primary', 'depth' => 1, 'walker' => new Content_menu_walker(1), 'container_class' => 'links-top-level' ) );
@@ -26,6 +20,7 @@
         }
 
     ?>
-
   </div>
 </div>
+
+<?php get_footer(); ?>

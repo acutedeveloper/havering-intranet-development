@@ -16,7 +16,8 @@ define("CPT_PLUGIN_DIR", plugin_dir_path(__FILE__));
 define("CPT_PLUGIN_URL", plugin_dir_url( __FILE__ ));
 
 //Load up the classes for wordpress
-require_once CPT_PLUGIN_DIR . 'includes/custom-posttypes.php';
+require_once CPT_PLUGIN_DIR . 'includes/class-custom-posttypes.php';
+require_once CPT_PLUGIN_DIR . 'includes/class-breadcrumbs.php';
 require_once CPT_PLUGIN_DIR . 'includes/class-intranetmenu.php';
 
 add_action( 'wp_enqueue_scripts', 'enqueue_and_register_my_scripts' );

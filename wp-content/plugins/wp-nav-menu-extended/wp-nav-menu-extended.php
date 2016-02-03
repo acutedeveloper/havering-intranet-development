@@ -72,14 +72,14 @@ class jb_nav_menu {
 
 	/**
 	 * Builds a tree of menu items recursively
-	 * 
+	 *
 	 * @param  array  $list
 	 * @param  object $parent
 	 * @return array
 	 */
 	private function build_items_tree( &$list, $parent, $level = 1 ) {
 		$tree = array();
-		
+
 		foreach ( $parent as $k => $l ) {
 			if ( isset( $list[ $l->ID ] ) )
 				$l->children = $this->build_items_tree( $list, $list[ $l->ID ], $level + 1 );
@@ -87,13 +87,13 @@ class jb_nav_menu {
 			$l->level = $level;
 			$tree[] = $l;
 		}
-		
+
 		return $tree;
 	}
 
 	/**
 	 * Gets items from a particular level
-	 * 
+	 *
 	 * @param  array   $tree
 	 * @param  integer $level
 	 * @param  string  $child_of
@@ -101,7 +101,7 @@ class jb_nav_menu {
 	 */
 	private function get_level_items( $tree, $level = 1, $child_of = '' ) {
 		$items = array();
-		
+
 		foreach ( $tree as $item ) {
 			$child_of_flag = false;
 
@@ -111,7 +111,7 @@ class jb_nav_menu {
 				elseif ( gettype( $child_of ) == 'string' && $item->menu_item_parent != $this->get_menu_id_from_title( $child_of ) )
 					$child_of_flag = true;
 			}
-			
+
 			if ( $item->level == $level && ! $child_of_flag ) {
 				unset( $item->children );
 				$items[] = $item;
@@ -120,18 +120,21 @@ class jb_nav_menu {
 			if ( isset( $item->children ) && $item->children )
 				$items = $items + $this->get_level_items( $item->children, $level, $child_of );
 		}
-		
+
 		return $items;
 	}
 
 	/**
 	 * Gets a menu ID based on the title of the item
-	 * 
+	 *
 	 * @param  string $name
 	 * @return string
 	 */
 	private function get_menu_id_from_title( $name = '' ) {
+
+			printme($this->_menu_items);
 		foreach ( $this->_menu_items as $item ) {
+
 			if ( $item->title == $name )
 				return $item->ID;
 		}

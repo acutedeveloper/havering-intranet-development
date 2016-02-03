@@ -38,3 +38,9 @@
       		</ul>
       	</div>
       </header>
+
+			<?php if(!is_home()): ?>
+			<div id="breadcrumbs">
+	    	<?php the_breadcrumb(); ?>
+	    </div>
+		<?php endif; ?>

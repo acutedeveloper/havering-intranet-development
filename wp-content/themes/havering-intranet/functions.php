@@ -75,7 +75,7 @@ Class Content_menu_walker extends Walker_Nav_Menu
 
   public function __construct($menu_level = 0)
   {
-    $this->$menu_level = $menu_level;
+    $this->menu_level = $menu_level;
   }
 
   public function start_lvl( &$output, $depth = 0, $args = array() ) {
@@ -90,17 +90,26 @@ Class Content_menu_walker extends Walker_Nav_Menu
       if($depth >= 1)
         return;
 
+      //printme($object);
       $data = 'data-menu-item-id="'.$object->ID.'"';
-      $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : $object->object).'" ';
+      $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : get_query_var('menu')).'" ';
 
       if($object->type == 'post_type')
       {
-        $link = get_page_link ( $object->object_id );
+        //$link = site_url().'/'.get_query_var('post_type').'/'.sanitize_title($object->title);
+        $link = get_permalink($object->object_id);
         $data = "";
       }
       elseif( $object->type == 'taxonomy')
       {
-        $link = site_url().'/menu/'.$object->object.'/'.$object->ID.'/'.sanitize_title($object->title);
+        if($this->menu_level == 3)
+        {
+          $link = get_term_link( sanitize_title($object->title), $object->object );
+        }
+        else
+        {
+          $link = site_url().'/menu/'.get_query_var('menu').'/'.$object->ID.'/'.sanitize_title($object->title);
+        }
       }
       else
       {
@@ -166,7 +175,7 @@ if ( !class_exists('HI_CPT_Nav')) {
         	<div id="posttype-wl-login" class="posttypediv">
         		<div id="tabs-panel-wishlist-login" class="tabs-panel tabs-panel-active">
         			<ul id ="wishlist-login-checklist" class="categorychecklist form-no-clear">
-              <?php foreach ($this->cpts as $cpt) { print_r($cpt); ?>
+              <?php foreach ($this->cpts as $cpt) { ?>
         				<li>
         					<label class="menu-item-title">
         						<input type="checkbox" class="menu-item-checkbox" name="menu-item[-1][menu-item-object-id]" value="-1"> <?php echo $cpt->label; ?>
@@ -193,6 +202,7 @@ if ( !class_exists('HI_CPT_Nav')) {
 }
 $custom_nav = new HI_CPT_Nav;
 add_action('admin_init', array($custom_nav, 'add_nav_menu_meta_boxes'));
+
 
 //------ LOAD JAVASCRIPT ------//
 
@@ -223,6 +233,17 @@ function inspect_wp_query()
 // Take a look at the Action Reference: http://codex.wordpress.org/Plugin_API/Action_Reference
 //add_action( 'shutdown', 'inspect_wp_query', 999 ); // Query on public facing pages
 //add_action( 'admin_footer', 'inspect_wp_query', 999 ); // Query in admin UI
+
+add_action( 'shutdown', 'x_shutdown' );
+function x_shutdown() {
+  if ( ! is_admin() ) {
+    global $wp;
+    echo '<pre><code>';
+    echo '$wp->query_vars: ';
+    print_r( $wp->query_vars );
+    echo '</code></pre>';
+  }
+}
 
 function printme($array)
 {

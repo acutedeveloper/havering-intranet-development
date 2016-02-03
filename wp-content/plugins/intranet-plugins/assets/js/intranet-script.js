@@ -99,12 +99,10 @@ $(document).ready(function(){
 
   function buildSecondLevel(menuSlug, menuItemId)
   {
-    console.log('Item slug:' + menuSlug);
-    console.log('Item id:' + menuItemId);
     $.ajax({
-      type: "post",
+      type: "get",
       dataType: "html",
-      data: { menu_item_id: menuItemId, menu_slug: menuSlug, menu_level: 'level_two', action: 'get_menu_level' },
+      data: { menu_item_id: menuItemId, menu: menuSlug, menu_level: 'level_two', action: 'get_menu_level' },
       url: wp_js_object.ajax_url,
       success: function(response){
           newSecondLevelDiv = $('<div class="links-second-level display-desktop-300"></div>').html(response);
@@ -117,12 +115,10 @@ $(document).ready(function(){
 
   function buildThirdLevel(menuSlug, menuItemId)
   {
-    console.log('Item slug:' + menuSlug);
-    console.log('Item id:' + menuItemId);
     $.ajax({
-      type: "post",
+      type: "get",
       dataType: "html",
-      data: { menu_item_id: menuItemId, menu_slug: menuSlug, menu_level: 'level_three', action: 'get_menu_level' },
+      data: { menu_item_id: menuItemId, menu: menuSlug, menu_level: 'level_three', action: 'get_menu_level' },
       url: wp_js_object.ajax_url,
       success: function(response){
           newThirdLevelDiv = $('<div class="links-third-level display-desktop-600"></div>').html(response);

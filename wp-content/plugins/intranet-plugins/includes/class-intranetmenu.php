@@ -27,7 +27,7 @@ class intranetMenu
 
 		add_rewrite_rule(
 			'^menu/?([a-z\-]*)/?$',
-			'index.php?menu=$matches[1]',
+			'index.php?menu=$matches[1]&post_type=$matches[1]',
 			'top'
 		);
 
@@ -49,6 +49,7 @@ class intranetMenu
 	public function rewrite_add_var( $vars )
 	{
 		$vars[] = 'menu';
+		$vars[] = 'post_type';
 		$vars[] = 'tax_id';
 		$vars[] = 'tax_slug';
 	  return $vars;
@@ -58,16 +59,12 @@ class intranetMenu
 	{
 		if( get_query_var('menu') && get_query_var('tax_id') && get_query_var('tax_slug') )
 		{
-			get_header();
       include(CPT_PLUGIN_DIR . '/views/' . 'intranet-menu.php');
-			get_footer();
 			exit();
 		}
 		elseif( get_query_var('menu') )
 		{
-			get_header();
       include(CPT_PLUGIN_DIR . '/views/' . 'intranet-menu.php');
-			get_footer();
 			exit();
 		}
 
@@ -98,25 +95,21 @@ function get_menu_level()
 
 	// Let clean the data
 	$gump = new GUMP();
-	$sanitized_data = $gump->sanitize($_POST);
+	$sanitized_data = $gump->sanitize($_GET);
 
 	// Get the post_type
-	$menu_slug = $sanitized_data['menu_slug'];
+	$menu_slug = $sanitized_data['menu'];
 	$menu_item_id = $sanitized_data['menu_item_id'];
 	$menu_level = $sanitized_data['menu_level'];
 
 	// depending on the value
 	if($menu_level == 'level_two')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(), 'container' => false ) );
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(2), 'container' => false ) );
 	}
 	elseif ($menu_level == 'level_three')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(), 'container' => false) );
-	}
-	else
-	{
-		// Return an error
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(3), 'container' => false) );
 	}
 	die();
 }
