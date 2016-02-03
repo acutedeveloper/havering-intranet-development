@@ -3,7 +3,7 @@
 <nav id="homepage-navigation">
 	<div class="container">
 
-    <?php wp_nav_menu( array('theme_location'=>'primary','walker' => new Homepage_menu_walker(),'depth' => 0, 'container' => false,'items_wrap'      => '%3$s',) ); ?>
+    <?php wp_nav_menu( array('theme_location'=>'primary','walker' => new Homepage_menu_walker(),'depth' => 0, 'container' => false,'items_wrap' => '%3$s',) ); ?>
 
 	</div>
 </nav>
@@ -18,7 +18,7 @@
 		  <div class="b-container">
 
 				<?php
-	        $args = array( 'posts_per_page' => 3 );
+	        $args = array( 'posts_per_page' => 4 );
 	        query_posts($args);
 
 	        $count = 0;
@@ -38,7 +38,6 @@
 						</div>
 					</div>
 				<?php else: ?>
-		    <?php echo ($count == 1 ? '<div class="right-column">' : ''); ?>
 		        <div class="block block-headline">
 		        		<h2 class="text-havering-blue">
 		        			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
@@ -47,7 +46,6 @@
 		        		<?php the_excerpt(); ?>
 		        		<a href="<?php the_permalink(); ?>">Read more <i class="fa fa-chevron-circle-right"></i></a>
 		        </div>
-				<?php echo ($count == 3 ? '</div>' : ''); ?>
 				<?php endif; ?>
 					<?php
 						$count ++;
