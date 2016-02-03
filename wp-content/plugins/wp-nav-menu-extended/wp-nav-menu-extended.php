@@ -132,7 +132,6 @@ class jb_nav_menu {
 	 */
 	private function get_menu_id_from_title( $name = '' ) {
 
-			printme($this->_menu_items);
 		foreach ( $this->_menu_items as $item ) {
 
 			if ( $item->title == $name )

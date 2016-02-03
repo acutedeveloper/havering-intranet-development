@@ -59,7 +59,7 @@
 		</div>
 
 		<!-- YAMMER FEED -->
-		<div class="block block-coloured">
+		<!-- <div class="block block-coloured">
 		  <div class="b-headline gradient-dkblue">
 		    <h2>Yammer</h2>
 		  </div>
@@ -77,10 +77,12 @@
 				}
 			});
 			</script>
-		</div>
+		</div>  -->
 	</div>
 
 	<div class="right-column">
+
+		<?php dynamic_sidebar( 'homepage_sidebar' ); ?>
 
 		<!-- Calendar -->
 		<div class="block block-coloured">
@@ -120,35 +122,6 @@
 					<a href="#">Read more <i class="fa fa-chevron-circle-right"></i></a>
 				</div>
 
-			</div>
-		</div>
-
-		<!-- Useful Links -->
-		<div class="block block-coloured">
-			<div class="b-headline gradient-pink">
-				<h2>Useful links</h2>
-			</div>
-
-			<?php wp_nav_menu( array('theme_location'=>'useful-links', 'container_class' => 'b-container', 'menu_class' => 'sidebar-links') ); ?>
-
-		</div>
-
-		<!-- Popular Links -->
-		<div class="block block-coloured">
-			<div class="b-headline gradient-lime">
-				<h2>Popular links (FTBC)</h2>
-				<!-- http://www.wpbeginner.com/wp-tutorials/how-to-track-popular-posts-by-views-in-wordpress-without-a-plugin/ -->
-			</div>
-
-			<div class="b-container">
-				<ul class="sidebar-links">
-					<li><a href="#">Corporate plans</a></li>
-					<li><a href="#">Corporate strategies</a></li>
-					<li><a href="#">CMT Structure</a></li>
-					<li><a href="#">Agency workers</a></li>
-					<li><a href="#">Committees</a></li>
-					<li><a href="#">Complaints</a></li>
-				</ul>
 			</div>
 		</div>
 

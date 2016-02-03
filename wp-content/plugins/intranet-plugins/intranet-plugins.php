@@ -41,3 +41,12 @@ function enqueue_and_register_my_scripts()
   // Enqueued script with localized data.
   wp_enqueue_script( 'intranet_script' );
 }
+
+
+require_once CPT_PLUGIN_DIR . 'includes/class-hi-nav-menu-widget.php';
+
+function hi_register_widget() {
+	register_widget('HI_Nav_Menu_Widget');
+}
+
+add_action( 'widgets_init', 'hi_register_widget');

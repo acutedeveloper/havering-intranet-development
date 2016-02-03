@@ -13,12 +13,55 @@ register_nav_menus( array(
   'our-services' => 'Our Services',
   'about-havering' => 'About Havering',
   'my-test' => 'My Test'
-) );
+  )
+);
 
+function intranet_sidebars() {
+
+  register_sidebar( array(
+  	'name'          => 'Homepage Sidebar',
+  	'id'            => 'homepage_sidebar',
+  	'description'   => '',
+    'class'         => '',
+  	'before_widget' => '<div class="block block-coloured">',
+  	'after_widget'  => '</div>',
+  	'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
+  	'after_title'   => '</h2></div>'
+    )
+  );
+
+  register_sidebar( array(
+  	'name'          => 'News Sidebar',
+  	'id'            => 'news_sidebar',
+  	'description'   => '',
+    'class'         => '',
+    'before_widget' => '<div class="block block-coloured">',
+  	'after_widget'  => '</div>',
+  	'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
+  	'after_title'   => '</h2></div>'
+    )
+  );
+
+  register_sidebar( array(
+  	'name'          => 'Content Pages Sidebar',
+  	'id'            => 'content_sidebar',
+  	'description'   => '',
+    'class'         => '',
+    'before_widget' => '<div class="block block-coloured">',
+  	'after_widget'  => '</div>',
+  	'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
+  	'after_title'   => '</h2></div>'
+    )
+  );
+
+}
+
+add_action( 'widgets_init', 'intranet_sidebars' );
 
 function custom_excerpt_length( $length ) {
 	return 20;
 }
+
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
 add_theme_support( 'post-thumbnails' );
@@ -28,6 +71,7 @@ add_theme_support( 'post-thumbnails' );
 
 
 if (!is_admin()) add_action("wp_enqueue_scripts", "my_jquery_enqueue", 11);
+
 function my_jquery_enqueue() {
    wp_deregister_script('jquery');
    wp_register_script('jquery', get_bloginfo('stylesheet_directory')."/library/js/jquery-2.0.0b2.js", false, null);

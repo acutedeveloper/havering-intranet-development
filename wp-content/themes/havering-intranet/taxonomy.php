@@ -16,8 +16,6 @@ get_header(); ?>
 
       $current_category = get_queried_object();
 
-      // printme($current_category->query_var);
-
     ?>
 
     <div class="one-up-grid">
