@@ -81,3 +81,22 @@ function my_jquery_enqueue() {
    wp_enqueue_script('jquery-ui');
    wp_enqueue_script('bxslider');
 }
+
+//------ ADD IMAGE SIZES ------//
+
+if ( function_exists( 'add_image_size' ) ) {
+    add_image_size( 'landscape-4x3', 600, 450 );
+    add_image_size( 'landscape-16x9', 1280, 720 );
+    add_image_size( 'square', 600, 600, array( 'left', 'top' ) );
+}
+
+add_filter('image_size_names_choose', 'my_image_sizes');
+function my_image_sizes($sizes) {
+    $addsizes = array(
+        "landscape-4x3" => __( "Landscape 4x3" ),
+        "landscape-16x9" => __( "Landscape 16x9" ),
+        "square" => __( "Square" ),
+    );
+    $newsizes = array_merge($sizes, $addsizes);
+    return $newsizes;
+}
