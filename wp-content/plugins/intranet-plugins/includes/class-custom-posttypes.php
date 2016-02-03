@@ -101,16 +101,11 @@ class Build_intranet_cpts {
 					'rewrite' 							=> array('slug' => $hi_cpt['cpt_slug']),
 					'hierarchical'          => true,
 					'public'                => true,
-					'show_ui'               => true,
-					'show_in_menu'          => true,
 					'menu_position'         => 5,
 					'menu_icon'             => 'dashicons-admin-page',
-					'show_in_admin_bar'     => true,
-					'show_in_nav_menus'     => true,
 					'can_export'            => true,
 					'has_archive'           => true,
 					'exclude_from_search'   => false,
-					'publicly_queryable'    => true,
 					'capability_type'       => 'page',
 
 				);
@@ -159,11 +154,6 @@ class Build_intranet_cpts {
 						$wp_rewrite->add_rewrite_tag('%'.$hi_cpt['cpt_taxonomy'].'%', '([^/]+)', $hi_cpt['cpt_taxonomy'].'=');
 						$wp_rewrite->add_permastruct($hi_cpt['cpt_taxonomy'], $hi_cpt['cpt_slug'].'/category/%'.$hi_cpt['cpt_taxonomy'].'%/', false);
 				}
-		}
-
-		public function build_permalinks()
-		{
-
 		}
 
 		public function wp_hi_term_link($termlink, $term, $taxonomy) {

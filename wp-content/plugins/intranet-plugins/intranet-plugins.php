@@ -16,9 +16,10 @@ define("CPT_PLUGIN_DIR", plugin_dir_path(__FILE__));
 define("CPT_PLUGIN_URL", plugin_dir_url( __FILE__ ));
 
 //Load up the classes for wordpress
+require_once CPT_PLUGIN_DIR . 'includes/debugging-tools.php';
 require_once CPT_PLUGIN_DIR . 'includes/class-custom-posttypes.php';
 require_once CPT_PLUGIN_DIR . 'includes/class-breadcrumbs.php';
-require_once CPT_PLUGIN_DIR . 'includes/class-intranetmenu.php';
+require_once CPT_PLUGIN_DIR . 'includes/class-main-content-menu.php';
 
 add_action( 'wp_enqueue_scripts', 'enqueue_and_register_my_scripts' );
 
@@ -39,5 +40,4 @@ function enqueue_and_register_my_scripts()
 
   // Enqueued script with localized data.
   wp_enqueue_script( 'intranet_script' );
-
 }
