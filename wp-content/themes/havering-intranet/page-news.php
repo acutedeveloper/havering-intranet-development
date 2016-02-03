@@ -1,16 +1,8 @@
-<?php get_header(); ?>
-
-  <div id="breadcrumbs">
-  	<div class="container">
-  		<ul>
-  			<li><a href="#">Grandparent</a></li>
-  			<li><a href="#">Parent</a></li>
-  			<li><a href="#">Child</a></li>
-  			<li><a href="#">Grandchild</a></li>
-  			<li>Great-Grandchild</li>
-  		</ul>
-  	</div>
-  </div>
+<?php
+/**
+* Template Name: news
+*/
+ get_header(); ?>
 
   <div class="three-quarters-grid">
   	<div class="left-column">
@@ -41,8 +33,9 @@
           <a href="<?php the_permalink(); ?>">Read more <i class="fa fa-chevron-circle-right"></i></a>
         </div>
       </div>
-      <?php else: ?>
-      <div class="block block-thumb">
+    <?php else: //is_ticky ?>
+
+      <div class="block <?php echo (has_post_thumbnail() ? 'block-thumb' : 'block-headline') ?>">
         <?php
               if ( has_post_thumbnail() )
               {
@@ -58,6 +51,7 @@
           <a href="<?php the_permalink(); ?>">Read more <i class="fa fa-chevron-circle-right"></i></a>
         </div>
       </div>
+
       <?php endif; ?>
       <?php endwhile; else : _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); endif; ?>
 
