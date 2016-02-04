@@ -214,6 +214,36 @@ Class Content_menu_walker extends Walker_Nav_Menu
 
 }
 
+Class Taxonomy_menu_walker extends Walker_Nav_Menu
+{
+  public $menu_level;
+
+  function __construct($menu_level = 0)
+  {
+    $this->menu_level = $menu_level;
+  }
+
+  public function start_lvl( &$output, $depth = 0, $args = array() ) {
+	}
+
+  public function end_lvl( &$output, $depth = 0, $args = array() ) {
+	}
+
+  public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 )
+  {
+      if($depth >= 1)
+        return;
+
+  }
+
+  public function end_el( &$output, $object, $depth = 0, $args = array() )
+  {
+    if($depth >= 1)
+      return;
+  }
+
+}
+
 if ( !class_exists('HI_CPT_Nav')) {
     class HI_CPT_Nav {
 

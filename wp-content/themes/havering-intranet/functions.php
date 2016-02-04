@@ -100,3 +100,22 @@ function my_image_sizes($sizes) {
     $newsizes = array_merge($sizes, $addsizes);
     return $newsizes;
 }
+
+//------ REDIRECT TEMPLATE ------//
+
+add_filter( 'template_include', function( $template )
+{
+    // your custom post types
+    $args = array(
+    'public'   => true,
+    '_builtin' => false
+    );
+
+    $my_types = get_post_types( $args, 'names' );
+    $post_type = get_post_type();
+
+    if ( is_home() || in_array( $post_type, $my_types ) )
+        return $template;
+
+    return get_stylesheet_directory() . '/page.php';
+});
