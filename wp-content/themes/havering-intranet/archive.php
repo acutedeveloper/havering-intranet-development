@@ -20,18 +20,6 @@ get_header(); ?>
 
     ?>
 
-    <div id="breadcrumbs">
-    	<div class="container">
-    		<ul>
-    			<li><a href="#">Grandparent</a></li>
-    			<li><a href="#">Parent</a></li>
-    			<li><a href="#">Child</a></li>
-    			<li><a href="#">Grandchild</a></li>
-    			<li>Great-Grandchild</li>
-    		</ul>
-    	</div>
-    </div>
-
     <div class="one-up-grid">
     	<div id="content-navigation">
 					<h1>Here is the archive page</h1>

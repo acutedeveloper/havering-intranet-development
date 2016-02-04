@@ -114,7 +114,7 @@ add_filter( 'template_include', function( $template )
     $my_types = get_post_types( $args, 'names' );
     $post_type = get_post_type();
 
-    if ( is_home() || in_array( $post_type, $my_types ) )
+    if ( is_home() || !in_array( $post_type, $my_types ) )
         return $template;
 
     return get_stylesheet_directory() . '/page.php';

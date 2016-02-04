@@ -84,48 +84,6 @@
 
 		<?php dynamic_sidebar( 'homepage_sidebar' ); ?>
 
-		<!-- Calendar -->
-		<div class="block block-coloured">
-			<div class="b-headline gradient-dkblue">
-				<h2>Meeting &amp; Events</h2>
-			</div>
-			<div class="b-container">
-				<h3>January 2016</h3>
-
-				<div class="block block-calendar">
-					<div class="block-date gradient-pink">
-						<div class="day">Mon</div>
-						<div class="date">16</div>
-					</div>
-					<h2 class="text-pink"><a href="#">Headline Lorem ipsum dolor</a></h2>
-					<p>Sed tellus metus, fringilla vel.</p>
-					<a href="#">Read more <i class="fa fa-chevron-circle-right"></i></a>
-				</div>
-
-				<div class="block block-calendar">
-					<div class="block-date gradient-pink">
-						<div class="day">Mon</div>
-						<div class="date">16</div>
-					</div>
-					<h2 class="text-pink"><a href="#">Headline Lorem ipsum dolor</a></h2>
-					<p>Sed tellus metus, fringilla vel.</p>
-					<a href="#">Read more <i class="fa fa-chevron-circle-right"></i></a>
-				</div>
-
-				<div class="block block-calendar">
-					<div class="block-date gradient-pink">
-						<div class="day">Mon</div>
-						<div class="date">16</div>
-					</div>
-					<h2 class="text-pink"><a href="#">Headline Lorem ipsum dolor</a></h2>
-					<p>Sed tellus metus, fringilla vel.</p>
-					<a href="#">Read more <i class="fa fa-chevron-circle-right"></i></a>
-				</div>
-
-			</div>
-		</div>
-
-
 	</div>
 </div>
 
