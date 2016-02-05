@@ -8,7 +8,12 @@
   	<div class="left-column">
 
       <?php
-        $args = array( 'posts_per_page' => 10 );
+
+        $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+        $args = array(
+          'posts_per_page' => 5,
+          'paged'          => $paged
+        );
         query_posts($args);
 
         $count = 0;
@@ -55,17 +60,7 @@
       <?php endif; ?>
       <?php endwhile; else : _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); endif; ?>
 
-  		<ol class="pagination">
-  			<li><a class="active" href="#">Previous</a></li>
-  			<li><a href="#">1</a></li>
-  			<li><a class="active" href="#">2</a></li>
-  			<li><a href="#">3</a></li>
-  			<li><a href="#">4</a></li>
-  			<li><a href="#">5</a></li>
-  			<li><a href="#">6</a></li>
-  			<li><a href="#">7</a></li>
-  			<li><a class="active" href="#">Next</a></li>
-  		</ol>
+      <?php theme_pagination(); ?>
 
   	</div>
 

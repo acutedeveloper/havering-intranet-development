@@ -114,8 +114,50 @@ add_filter( 'template_include', function( $template )
     $my_types = get_post_types( $args, 'names' );
     $post_type = get_post_type();
 
-    if ( is_home() || !in_array( $post_type, $my_types ) )
-        return $template;
+    if (is_tax())
+      return $template;
 
-    return get_stylesheet_directory() . '/page.php';
+    if ( in_array( $post_type, $my_types ) )
+        return get_stylesheet_directory() . '/page.php';
+
+    return $template;
 });
+
+//------ PAGINATION ------//
+
+function theme_pagination($pages = '', $range = 2)
+{
+    $showitems = ($range * 2)+1;
+
+    $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+    if($pages == '')
+    {
+     global $wp_query;
+     $pages = $wp_query->max_num_pages;
+
+     if(!$pages)
+     {
+         $pages = 1;
+     }
+    }
+
+    if(1 != $pages)
+    {
+     echo "<ol class='pagination'>";
+     if($paged > 2 && $paged > $range+1 && $showitems < $pages) echo "<li><a href='".get_pagenum_link(1)."'>&laquo;</a><li>";
+     if($paged > 1 && $showitems < $pages) echo "<li><a href='".get_pagenum_link($paged - 1)."'>&lsaquo;</a><li>";
+
+     for ($i=1; $i <= $pages; $i++)
+     {
+         if (1 != $pages &&( !($i >= $paged+$range+1 || $i <= $paged-$range-1) || $pages <= $showitems ))
+         {
+             echo ($paged == $i)? "<li><a class='active' href='#'>".$i."</a></li>":"<li><a href='".get_pagenum_link($i)."'>".$i."</a><li>";
+         }
+     }
+
+     if ($paged < $pages && $showitems < $pages) echo "<li><a href='".get_pagenum_link($paged + 1)."'>&rsaquo;</a><li>";
+     if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo "<li><a href='".get_pagenum_link($pages)."'>&raquo;</a><li>";
+     echo "</ol>\n";
+    }
+}

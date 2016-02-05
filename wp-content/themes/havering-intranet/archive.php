@@ -12,6 +12,13 @@ Template Name: Archives
 
 	get_header();
 
+	// $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+	// $args = array(
+	// 	'posts_per_page' => 2,
+	// 	'paged'          => $paged
+	// );
+	// query_posts($args);
+
   ?>
 
 		<div class="three-quarters-grid">
@@ -43,7 +50,7 @@ Template Name: Archives
 		      </div>
 
 				<?php endwhile; else : _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); endif; ?>
-				<?php paginate_links (); ?>
+					<?php //theme_pagination(); ?>
     	</div>
 
 			<div class="right-column">
