@@ -17,25 +17,34 @@
     <div class="wrapper">
 
       <div class="header-search">
+
       	<form action="#" method="post" class="inline-form search-form">
       	  <div class="inline-container">
-      	      <input type="search" placeholder="Search" id="search-field" class="search-field" />
+      	      <input type="search" placeholder="Search" id="search-field" class="search-field" name="s" id="s" />
       		    <button class="btn btn-information">
       		    	Search
       		    </button>
       	  </div>
       	</form>
       </div>
-      <header id="header" class="cf" role="banner">
+
+				<?php query_posts( 'p=1734&post_type=page' ); ?>
+
+	      <header id="header" class="cf" role="banner">
       	<div class="container">
       		<div class="logo">
       			<a href="<?php echo site_url(); ?>"><img src="<?php bloginfo('stylesheet_directory'); ?>/library/images/logo-havering-intranet.png" alt="Havering Intranet" /></a>
       		</div>
+					<?php while (have_posts()) : the_post(); ?>
       		<ul class="bxslider">
-      			<li><a href="#"><img src="<?php bloginfo('stylesheet_directory'); ?>/library/images/carousel-yammer.gif" alt="Yammer" /></a></li>
-      			<li><a href="#"><img src="<?php bloginfo('stylesheet_directory'); ?>/library/images/carousel-password-safe.gif" alt="Password Safe" /></a></li>
-      			<li><a href="#"><img src="<?php bloginfo('stylesheet_directory'); ?>/library/images/carousel-pants.gif" alt="Pants" /></a></li>
+					<?php
+						if( have_rows('carousel_images') ): while ( have_rows('carousel_images') ) : the_row();
+							$image = get_sub_field('carousel_image');
+					?>
+      			<li><a href="<?php echo get_sub_field('carousel_link'); ?>"><img src="<?php echo $image['url']; ?>" alt="<?php echo $image['name']; ?>" /></a></li>
+					<?php endwhile; endif; ?>
       		</ul>
+				<?php endwhile; wp_reset_query(); ?>
       	</div>
       </header>
 
