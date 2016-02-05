@@ -65,6 +65,28 @@
         <?php endwhile; else : ?>
         	<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
         <?php endif; ?>
+
+
+        <?php if( have_rows('file_resources') ): ?>
+    		<h2>File downloads</h2>
+    		<table>
+    		<?php
+    			while ( have_rows('file_resources') ) : the_row();
+    				$file = get_sub_field('file_resource_download');
+    		?>
+
+    			<tr>
+            <td><i class="fa <?php echo get_mime_type_icon($file['mime_type']) ?>"></i></td>
+    				<td><a href="<?php echo $file['url']; ?>"><?php echo $file['title']; ?></a></td>
+    				<td><?php echo $file['description']; ?></td>
+    			</tr>
+
+    		<?php endwhile;?>
+    		</table>
+    		<?php else: ?>
+
+    		<?php endif; ?>
+
       </article>
 
     </div>

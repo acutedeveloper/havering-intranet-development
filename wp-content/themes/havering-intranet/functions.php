@@ -117,6 +117,9 @@ add_filter( 'template_include', function( $template )
     if (is_tax())
       return $template;
 
+      if (is_search())
+        return $template;
+
     if ( in_array( $post_type, $my_types ) )
         return get_stylesheet_directory() . '/page.php';
 
@@ -160,4 +163,56 @@ function theme_pagination($pages = '', $range = 2)
      if ($paged < $pages-1 &&  $paged+$range-1 < $pages && $showitems < $pages) echo "<li><a href='".get_pagenum_link($pages)."'>&raquo;</a><li>";
      echo "</ol>\n";
     }
+}
+
+//------ GET MIME TYPE ICONS ------//
+
+function get_mime_type_icon($mime_type)
+{
+
+  $mime_type_array = array(
+    'text/plain' => 'fa-file-text-o',
+
+    'image/jpeg' => 'fa-file-picture-o',
+    'image/gif' => 'fa-file-picture-o',
+
+    'application/vnd.ms-powerpoint' => 'fa-file-powerpoint-o',
+
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'fa-file-powerpoint-o',
+    'application/vnd.openxmlformats-officedocument.presentationml.template' => 'fa-file-powerpoint-o',
+    'application/vnd.openxmlformats-officedocument.presentationml.slideshow' => 'fa-file-powerpoint-o',
+    'application/vnd.ms-powerpoint.addin.macroEnabled.12' => 'fa-file-powerpoint-o',
+    'application/vnd.ms-powerpoint.presentation.macroEnabled.12' => 'fa-file-powerpoint-o',
+    'application/vnd.ms-powerpoint.slideshow.macroEnabled.12' => 'fa-file-powerpoint-o',
+
+    'application/vnd.ms-excel' => 'fa-file-excel-o',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'fa-file-excel-o',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.template' => 'fa-file-excel-o',
+    'application/vnd.ms-excel.sheet.macroEnabled.12' => 'fa-file-excel-o',
+    'application/vnd.ms-excel.template.macroEnabled.12' => 'fa-file-excel-o',
+    'application/vnd.ms-excel.addin.macroEnabled.12' => 'fa-file-excel-o',
+    'application/vnd.ms-excel.sheet.binary.macroEnabled.12' => 'fa-file-excel-o',
+
+    'application/pdf' => 'fa-file-pdf-o',
+
+    'application/msword' => 'fa-file-word-o',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'fa-file-word-o',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => 'fa-file-word-o',
+    'application/vnd.ms-word.document.macroEnabled.12' => 'fa-file-word-o',
+    'application/vnd.ms-word.template.macroEnabled.12' => 'fa-file-word-o',
+
+    'application/zip' => 'fa-file-archive-o',
+    'application/x-rar-compressed' => 'fa-file-archive-o',
+  );
+
+  $mime_type = trim($mime_type);
+
+  if(array_key_exists($mime_type, $mime_type_array))
+  {
+    return $mime_type_array[$mime_type];
+  }
+  else
+  {
+    return 'fa-file-o';
+  }
 }
