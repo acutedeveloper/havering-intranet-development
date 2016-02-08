@@ -16,7 +16,6 @@
 		    <h2>News</h2>
 		  </div>
 		  <div class="b-container">
-
 				<?php
 	        $args = array( 'posts_per_page' => 4 );
 	        query_posts($args);
@@ -38,6 +37,7 @@
 						</div>
 					</div>
 				<?php else: ?>
+					<div class="right-column">
 		        <div class="block block-headline">
 		        		<h2 class="text-havering-blue">
 		        			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
@@ -46,6 +46,7 @@
 		        		<?php the_excerpt(); ?>
 		        		<a href="<?php the_permalink(); ?>">Read more <i class="fa fa-chevron-circle-right"></i></a>
 		        </div>
+					</div>
 				<?php endif; ?>
 					<?php
 						$count ++;
