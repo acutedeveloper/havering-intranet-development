@@ -95,7 +95,9 @@ function get_menu_level()
 
 	// Let clean the data
 	$gump = new GUMP();
-	$sanitized_data = $gump->sanitize($_GET);
+	$sanitized_data = $gump->sanitize($_REQUEST);
+
+	//printme($_GET);
 
 	// Get the post_type
 	$menu_slug = $sanitized_data['menu'];
@@ -105,11 +107,11 @@ function get_menu_level()
 	// depending on the value
 	if($menu_level == 'level_two')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(2), 'container' => false ) );
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(2, $menu_slug), 'container' => false ) );
 	}
 	elseif ($menu_level == 'level_three')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(3), 'container' => false) );
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(3, $menu_slug), 'container' => false) );
 	}
 	die();
 }
@@ -143,7 +145,14 @@ Class Homepage_menu_walker extends Walker
       //echo "<pre>"; print_r($object); echo "</pre>";
       $output .= (self::$element_position % 4 == 1) ? "<div class=\"four-up-grid\">\n": "" ;
       $output .= "<div class=\"grid-item\">\n";
-      $link = ( $object->object == 'page') ? get_page_link ( $object->object_id ) : site_url().'/menu/'.$object->post_name;
+			if( 'events' == $object->post_name || 'news' == $object->post_name)
+			{
+				$link = site_url().'/'.$object->post_name;
+			}
+			else
+			{
+				$link = ( $object->object == 'page') ? get_page_link ( $object->object_id ) : site_url().'/menu/'.$object->post_name;
+			}
       $output .= "  <h3><a href=".$link.">".$object->title."</a></h3>\n";
       $output .= ( $object->post_content == "" ) ? "" : "  <p>".$object->post_content."</p>\n";
   }
@@ -158,11 +167,13 @@ Class Homepage_menu_walker extends Walker
 
 Class Content_menu_walker extends Walker_Nav_Menu
 {
-  public $menu_level;
+  public $hi_menu_level;
+	public $hi_menu_slug;
 
-  function __construct($menu_level = 0)
+  function __construct($hi_menu_level = 0, $hi_menu_slug = NULL)
   {
-    $this->menu_level = $menu_level;
+		$this->hi_menu_level = $hi_menu_level;
+		$this->hi_menu_slug = $hi_menu_slug;
   }
 
   public function start_lvl( &$output, $depth = 0, $args = array() ) {
@@ -176,31 +187,38 @@ Class Content_menu_walker extends Walker_Nav_Menu
       if($depth >= 1)
         return;
 
-      //printme($object);
       $data = 'data-menu-item-id="'.$object->ID.'"';
-      $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : get_query_var('menu')).'" ';
+      $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : $this->hi_menu_slug).'" ';
 
       if($object->type == 'post_type')
       {
         $link = get_permalink($object->object_id);
         $data = "";
       }
-      elseif( $object->type == 'taxonomy')
+      elseif($object->type == 'taxonomy')
       {
-        if($this->menu_level == 3)
+      	if($this->hi_menu_level == 3)
         {
           $link = get_term_link( sanitize_title($object->title), $object->object );
         }
         else
         {
-          $link = site_url().'/menu/'.get_query_var('menu').'/'.$object->ID.'/'.sanitize_title($object->title);
+          $link = site_url().'/menu/'.$this->hi_menu_slug.'/'.$object->ID.'/'.sanitize_title($object->title);
         }
       }
       else
       {
         $link = site_url().'/menu/'.$object->post_name;
       }
-      $output .= "<li>\n";
+
+			if( trim($this->hi_menu_slug) == trim($object->post_name) )
+			{
+				$output .= "<li class=\"active\">\n";
+			}
+			else
+			{
+				$output .= "<li>\n";
+			}
       $output .= "  <a href=".$link." ".$data." >".$object->title."</a>\n";
       $output .= ( trim($object->post_content) == NULL ) ? NULL : "  <p>".$object->post_content."</p>\n";
   }
