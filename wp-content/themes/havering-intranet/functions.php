@@ -37,7 +37,7 @@ function intranet_sidebars() {
     'class'         => '',
     'before_widget' => '<div class="block block-coloured">',
   	'after_widget'  => '</div>',
-  	'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
+    'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
   	'after_title'   => '</h2></div>'
     )
   );
@@ -49,7 +49,7 @@ function intranet_sidebars() {
     'class'         => '',
     'before_widget' => '<div class="block block-coloured">',
   	'after_widget'  => '</div>',
-  	'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
+    'before_title'  => '<div class="b-headline gradient-dkblue"><h2>',
   	'after_title'   => '</h2></div>'
     )
   );
@@ -103,28 +103,28 @@ function my_image_sizes($sizes) {
 
 //------ REDIRECT TEMPLATE ------//
 
-add_filter( 'template_include', function( $template )
-{
-    // your custom post types
-    $args = array(
-    'public'   => true,
-    '_builtin' => false
-    );
-
-    $my_types = get_post_types( $args, 'names' );
-    $post_type = get_post_type();
-
-    if (is_tax())
-      return $template;
-
-      if (is_search())
-        return $template;
-
-    if ( in_array( $post_type, $my_types ) )
-        return get_stylesheet_directory() . '/page.php';
-
-    return $template;
-});
+// add_filter( 'template_include', function( $template )
+// {
+//     // your custom post types
+//     $args = array(
+//     'public'   => true,
+//     '_builtin' => false
+//     );
+//
+//     $my_types = get_post_types( $args, 'names' );
+//     $post_type = get_post_type();
+//
+//     if (is_tax())
+//       return $template;
+//
+//       if (is_search())
+//         return $template;
+//
+//     if ( in_array( $post_type, $my_types ) )
+//         return get_stylesheet_directory() . '/page.php';
+//
+//     return $template;
+// });
 
 //------ PAGINATION ------//
 
@@ -136,13 +136,13 @@ function theme_pagination($pages = '', $range = 2)
 
     if($pages == '')
     {
-     global $wp_query;
-     $pages = $wp_query->max_num_pages;
+      global $wp_query;
+      $pages = $wp_query->max_num_pages;
 
-     if(!$pages)
-     {
-         $pages = 1;
-     }
+      if(!$pages)
+      {
+        $pages = 1;
+      }
     }
 
     if(1 != $pages)

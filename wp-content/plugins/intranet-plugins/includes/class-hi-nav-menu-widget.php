@@ -54,8 +54,10 @@
 
 		echo $args['before_widget'];
 
+    $before_title_class = str_replace('gradient-dkblue', $instance['hi_titlecolor'].' ',$args['before_title']);
+
 		if ( !empty($instance['title']) )
-			echo $args['before_title'] . $instance['title'] . $args['after_title'];
+			echo $before_title_class . $instance['title'] . $args['after_title'];
 
 		$nav_menu_args = array(
 			'fallback_cb' => '',
@@ -83,6 +85,7 @@
 		wp_nav_menu( apply_filters( 'widget_nav_menu_args', $nav_menu_args, $nav_menu, $args, $instance ) );
 
 		echo $args['after_widget'];
+
 	}
 
 	/**
@@ -104,6 +107,9 @@
 		if ( ! empty( $new_instance['hi_nav_menu'] ) ) {
 			$instance['hi_nav_menu'] = (int) $new_instance['hi_nav_menu'];
 		}
+    if ( ! empty( $new_instance['hi_titlecolor'] ) ) {
+			$instance['hi_titlecolor'] = $new_instance['hi_titlecolor'];
+		}
 		return $instance;
 	}
 
@@ -116,8 +122,10 @@
 	 * @param array $instance Current settings.
 	 */
 	public function form( $instance ) {
+
 		$title = isset( $instance['title'] ) ? $instance['title'] : '';
-		$nav_menu = isset( $instance['hi_nav_menu'] ) ? $instance['hi_nav_menu'] : '';
+    $nav_menu = isset( $instance['hi_nav_menu'] ) ? $instance['hi_nav_menu'] : '';
+    $titlecolor = isset( $instance['hi_titlecolor'] ) ? $instance['hi_titlecolor'] : '';
 
 		// Get menus
 		$menus = wp_get_nav_menus();
@@ -151,6 +159,24 @@
 				</select>
 			</p>
 		</div>
+
+    <p>
+      <label for="<?php echo $this->get_field_id( 'titlecolor' ); ?>"><?php _e( 'Title color:' ); ?></label>
+      <?php
+
+        $style_options[] = array( 'style_class' => 'gradient-dkblue', 'style_name' => 'Dark Blue' );
+        $style_options[] = array( 'style_class' => 'gradient-lime', 'style_name' => 'Lime' );
+        $style_options[] = array( 'style_class' => 'gradient-pink', 'style_name' => 'Pink' );
+        $style_options[] = array( 'style_class' => 'gradient-orange', 'style_name' => 'Orange' );
+
+      ?>
+      <select name="<?php echo $this->get_field_name( 'hi_titlecolor' ); ?>" id="hi_titlecolor <?php echo $this->get_field_id( 'hi_titlecolor' ); ?>">
+      <?php foreach( $style_options as $style ):?>
+        <option <?php echo (isset($titlecolor) && $style['style_class'] == $titlecolor ? "selected" : NULL); ?> value="<?php echo $style['style_class']; ?>"><?php echo $style['style_name']; ?></option>
+      <?php endforeach; ?>
+      </select>
+    </p>
+
 		<?php
 	}
 }

@@ -48,6 +48,8 @@ class HI_Widget_Archives extends WP_Widget {
 		/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
 		$title = apply_filters( 'widget_title', empty( $instance['title'] ) ? __( 'Archives' ) : $instance['title'], $instance, $this->id_base );
 
+		$args['before_title'] = str_replace('gradient-dkblue', $instance['hi_titlecolor'].' ',$args['before_title']);
+
 		echo $args['before_widget'];
 		if ( $title ) {
 			echo $args['before_title'] . $title . $args['after_title'];
@@ -138,7 +140,9 @@ class HI_Widget_Archives extends WP_Widget {
 		$instance['title'] = sanitize_text_field( $new_instance['title'] );
 		$instance['count'] = $new_instance['count'] ? 1 : 0;
 		$instance['dropdown'] = $new_instance['dropdown'] ? 1 : 0;
-
+		if ( ! empty( $new_instance['hi_titlecolor'] ) ) {
+			$instance['hi_titlecolor'] = $new_instance['hi_titlecolor'];
+		}
 		return $instance;
 	}
 
@@ -153,6 +157,8 @@ class HI_Widget_Archives extends WP_Widget {
 	public function form( $instance ) {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'count' => 0, 'dropdown' => '') );
 		$title = sanitize_text_field( $instance['title'] );
+		$titlecolor = isset( $instance['hi_titlecolor'] ) ? $instance['hi_titlecolor'] : '';
+
 		?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 		<p>
@@ -160,6 +166,23 @@ class HI_Widget_Archives extends WP_Widget {
 			<br/>
 			<input class="checkbox" type="checkbox"<?php checked( $instance['count'] ); ?> id="<?php echo $this->get_field_id('count'); ?>" name="<?php echo $this->get_field_name('count'); ?>" /> <label for="<?php echo $this->get_field_id('count'); ?>"><?php _e('Show post counts'); ?></label>
 		</p>
+
+		<p>
+      <label for="<?php echo $this->get_field_id( 'titlecolor' ); ?>"><?php _e( 'Title color:' ); ?></label>
+      <?php
+
+        $style_options[] = array( 'style_class' => 'gradient-dkblue', 'style_name' => 'Dark Blue' );
+        $style_options[] = array( 'style_class' => 'gradient-lime', 'style_name' => 'Lime' );
+        $style_options[] = array( 'style_class' => 'gradient-pink', 'style_name' => 'Pink' );
+        $style_options[] = array( 'style_class' => 'gradient-orange', 'style_name' => 'Orange' );
+
+      ?>
+      <select name="<?php echo $this->get_field_name( 'hi_titlecolor' ); ?>" id="hi_titlecolor <?php echo $this->get_field_id( 'hi_titlecolor' ); ?>">
+      <?php foreach( $style_options as $style ):?>
+        <option <?php echo (isset($titlecolor) && $style['style_class'] == $titlecolor ? "selected" : NULL); ?> value="<?php echo $style['style_class']; ?>"><?php echo $style['style_name']; ?></option>
+      <?php endforeach; ?>
+      </select>
+    </p>
 		<?php
 	}
 }
