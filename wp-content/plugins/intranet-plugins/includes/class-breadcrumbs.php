@@ -30,53 +30,64 @@ function get_taxonomy_parents($parent, $taxonomy, $menu_slug)
 	}
 }
 
-function search_cp_url()
-{
-	$url = array_filter(explode("/", $_SERVER["REQUEST_URI"]));
-	foreach ($url as $key => $item)
-	{
-		if ($item == 'tag'){
-			return TRUE;
-		}
-	}
-}
-
 function the_breadcrumb()
 {
-
-	$queried_object = get_queried_object();
-
-	$current_post_type_object = get_post_type_object( $queried_object->post_type );
-	$current_tax_object = get_object_taxonomies( $queried_object->post_type, 'names' );
 
 	echo '<div class="container">';
 	echo '	<ul>';
 	echo '<li><a href="'.get_option('home').'">Home</a></li>';
+	$post_type = get_post_type();
 
-	if(get_query_var('menu'))
+	if( is_search() )
 	{
-		echo '<li><a href="'.get_option('home').'">'.get_query_var('menu').'</a></li>';
+		echo 'search';
 	}
 
-	if( get_query_var('post_type') )
+	if( $post_type == 'page')
 	{
+		echo '<li>'.the_title().'</li>';
+	}
+
+	if( $post_type == 'post' && !is_archive() )
+	{
+		echo '<li><a href="'.site_url().'/news">News</a></li>';
+		echo '<li>'.the_title().'</li>';
+	}
+
+	if( 'page' != $post_type && 'post' != $post_type )
+	{
+		$queried_object = get_queried_object();
+
+		//printme($queried_object);
+		$current_post_type_object = get_post_type_object( $post_type );
+
+		//printme($current_post_type_object);
+
 		$link = site_url().'/menu/'.$current_post_type_object->rewrite['slug'];
 		echo '<li><a href="'.$link.'">'.$current_post_type_object->label.'</a></li>';
-	}
 
-	if( get_query_var('name') )
-	{
-		$post_terms = get_the_terms( get_the_ID(), $current_tax_object[0] );
-
-		if($post_terms)
+		if( get_query_var('name') )
 		{
-			foreach($post_terms as $term)
+			$current_tax_object = get_object_taxonomies( $post_type, 'names' );
+
+			$post_terms = get_the_terms( get_the_ID(), $current_tax_object[0] );
+
+			if($post_terms)
 			{
-				get_taxonomy_parents($term, $term->taxonomy, $current_post_type_object->rewrite['slug']);
+				foreach($post_terms as $term)
+				{
+					get_taxonomy_parents($term, $term->taxonomy, $current_post_type_object->rewrite['slug']);
+				}
 			}
 		}
-
 		echo '<li>'.the_title().'</li>';
+
+	}
+
+	if(is_archive())
+	{
+		//echo '<li><a href="'.site_url().'/news">News</a></li>';
+		echo '<li>'.the_archive_title().'</li>';
 	}
 
 		// if Single
