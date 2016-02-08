@@ -18,7 +18,7 @@
 
       <div class="header-search">
 
-      	<form action="#" method="post" class="inline-form search-form">
+      	<form action="<?php echo site_url(); ?>" method="get" class="inline-form search-form">
       	  <div class="inline-container">
       	      <input type="search" placeholder="Search" id="search-field" class="search-field" name="s" id="s" />
       		    <button class="btn btn-information">

@@ -1,4 +1,8 @@
-<?php get_header(); ?>
+<?php
+/**
+* Template Name: search
+*/
+ get_header(); ?>
 
 <div class="three-quarters-grid">
 	<div class="left-column">
