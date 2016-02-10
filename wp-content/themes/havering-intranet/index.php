@@ -60,7 +60,7 @@
 		</div>
 
 		<!-- YAMMER FEED -->
-		<!-- <div class="block block-coloured">
+		<div class="block block-coloured">
 		  <div class="b-headline gradient-dkblue">
 		    <h2>Yammer</h2>
 		  </div>
@@ -78,7 +78,7 @@
 				}
 			});
 			</script>
-		</div>  -->
+		</div>
 	</div>
 
 	<div class="right-column">
