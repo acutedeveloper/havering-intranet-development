@@ -132,6 +132,7 @@
  * obj = JSON.parse(data);
  *
  * console.log('Event title is: ' + obj.title);
+ *
  * }
  *
  * })(window, document);

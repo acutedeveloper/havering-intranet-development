@@ -21,6 +21,7 @@ require_once CPT_PLUGIN_DIR . 'includes/class-custom-posttypes.php';
 require_once CPT_PLUGIN_DIR . 'includes/class-breadcrumbs.php';
 require_once CPT_PLUGIN_DIR . 'includes/class-main-content-menu.php';
 
+
 add_action( 'wp_enqueue_scripts', 'enqueue_and_register_my_scripts' );
 
 function enqueue_and_register_my_scripts()

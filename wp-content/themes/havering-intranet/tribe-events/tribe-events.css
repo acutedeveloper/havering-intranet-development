@@ -1,3 +1,7 @@
 #tribe-events-bar{
   float: left;
 }
+
+#tribe-events-pg-template{
+  clear: left;  
+}

@@ -20,7 +20,7 @@ $( document ).on('click', '.menu-first-level', function (e){
   }
   else if(secondLevelMenu.css('display') == 'block')
   {
-    secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
+      secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
       secondLevelMenu.empty();
     });
   }
@@ -69,10 +69,8 @@ $(document).on( 'click', '.links-top-level ul li a', function(e) {
   else if(secondLevelMenu.is(':visible'))
   {
       secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
-
       secondLevelMenu.empty();
       getSecondLevelMenu(menuSlug, menuItemId);
-
     });
 
   }

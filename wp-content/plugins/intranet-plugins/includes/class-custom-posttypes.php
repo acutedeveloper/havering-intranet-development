@@ -20,9 +20,15 @@ $hi_cpts = array(
 		'cpt_taxonomy' => 'hi_support_for_you_tax'
 	),
 	array(
-		'name' => 'Human Resources',
+		'name' => 'Human Resources 2 Char',
 		'cpt_name' => 'hi_hr',
 		'cpt_slug' => 'hr',
+		'cpt_taxonomy' => 'hi_hr_tax'
+	),
+	array(
+		'name' => 'Human Resources',
+		'cpt_name' => 'hi_human_resources',
+		'cpt_slug' => 'human-resources',
 		'cpt_taxonomy' => 'hi_hr_tax'
 	),
 	array(
@@ -56,7 +62,7 @@ $hi_cpts = array(
 		'cpt_taxonomy' => 'hi_our_services_tax'
 	),
 	array(
-		'name' => 'About Havering new',
+		'name' => 'About Havering',
 		'cpt_name' => 'hi_about_havering',
 		'cpt_slug' => 'about_havering',
 		'cpt_taxonomy' => 'hi_about_havering_tax'
