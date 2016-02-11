@@ -19,17 +19,17 @@ $hi_cpts = array(
 		'cpt_slug' => 'support-for-you',
 		'cpt_taxonomy' => 'hi_support_for_you_tax'
 	),
-	array(
-		'name' => 'Human Resources 2 Char',
-		'cpt_name' => 'hi_hr',
-		'cpt_slug' => 'hr',
-		'cpt_taxonomy' => 'hi_hr_tax'
-	),
+	// array(
+	// 	'name' => 'Human Resources 2 Char',
+	// 	'cpt_name' => 'hi_hr',
+	// 	'cpt_slug' => 'hr',
+	// 	'cpt_taxonomy' => 'hi_hr_tax'
+	// ),
 	array(
 		'name' => 'Human Resources',
 		'cpt_name' => 'hi_human_resources',
 		'cpt_slug' => 'human-resources',
-		'cpt_taxonomy' => 'hi_hr_tax'
+		'cpt_taxonomy' => 'hi_human_resources_tax'
 	),
 	array(
 		'name' => 'Self Service',

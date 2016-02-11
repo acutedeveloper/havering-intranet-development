@@ -5,7 +5,7 @@ register_nav_menus( array(
   'useful-links' => 'Useful links',
   'help-with-work' => 'Help with work',
   'support-for-you' => 'Support for you',
-  'human-resources' => 'HR',
+  'human-resources' => 'Human resources',
   'self-service' => 'Self-service',
   'ict' => 'ICT',
   'committee-services' => 'Committee services',
