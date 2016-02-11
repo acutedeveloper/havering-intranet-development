@@ -54,7 +54,25 @@ function the_breadcrumb()
 		echo '<li>'.the_title().'</li>';
 	}
 
-	if( 'page' != $post_type && 'post' != $post_type )
+	if (get_query_var( $post_type.'_tax' ))
+	{
+		$current_taxonomy = $post_type.'_tax';
+		$curr_tax_term = get_query_var( $current_taxonomy );
+		$term_object = get_term_by( 'slug', $curr_tax_term, $current_taxonomy, 'object' );
+		$current_post_type_object = get_post_type_object( $post_type );
+
+		$link = site_url().'/menu/'.$current_post_type_object->rewrite['slug'];
+		echo '<li><a href="'.$link.'">'.$current_post_type_object->label.'</a></li>';
+
+		get_taxonomy_parents($term_object, $current_taxonomy, $current_post_type_object->rewrite['slug']);
+	}
+
+	// Custom post types
+	$args = array( 'public' => true, '_builtin' => true );
+
+	$my_types = get_post_types( $args, 'names' );
+
+	if ( !in_array( $post_type, $my_types ) )
 	{
 		$queried_object = get_queried_object();
 
@@ -62,9 +80,11 @@ function the_breadcrumb()
 		$current_post_type_object = get_post_type_object( $post_type );
 
 		//printme($current_post_type_object);
-
-		$link = site_url().'/menu/'.$current_post_type_object->rewrite['slug'];
-		echo '<li><a href="'.$link.'">'.$current_post_type_object->label.'</a></li>';
+		if (!get_query_var( $post_type.'_tax' ))
+		{
+			$link = site_url().'/menu/'.$current_post_type_object->rewrite['slug'];
+			echo '<li><a href="'.$link.'">'.$current_post_type_object->label.'</a></li>';
+		}
 
 		if( get_query_var('name') )
 		{
@@ -79,16 +99,15 @@ function the_breadcrumb()
 					get_taxonomy_parents($term, $term->taxonomy, $current_post_type_object->rewrite['slug']);
 				}
 			}
+			echo '<li>'.the_title().'</li>';
+
 		}
-		echo '<li>'.the_title().'</li>';
-
 	}
 
-	if(is_archive())
-	{
-		//echo '<li><a href="'.site_url().'/news">News</a></li>';
-		echo '<li>'.the_archive_title().'</li>';
-	}
+	// if(is_archive())
+	// {
+	// 	echo '<li>'.the_archive_title().'</li>';
+	// }
 
 		// if Single
 
