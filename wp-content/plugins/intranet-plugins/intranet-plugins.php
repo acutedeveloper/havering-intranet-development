@@ -4,7 +4,7 @@ Plugin Name: Havering Intranet Functions
 Plugin URI: http://www.acumendesign.co.uk
 Description: A collections of features and function exclusive for the Havering Intranet Website
 Version: 0.1
-Author: @acute_designer
+Author: @acute_developer
 Author Nigel M Peters
 License: GPL2
 */
