@@ -103,28 +103,40 @@ function my_image_sizes($sizes) {
 
 //------ REDIRECT TEMPLATE ------//
 
-// add_filter( 'template_include', function( $template )
-// {
-//     // your custom post types
-//     $args = array(
-//     'public'   => true,
-//     '_builtin' => false
-//     );
-//
-//     $my_types = get_post_types( $args, 'names' );
-//     $post_type = get_post_type();
-//
-//     if (is_tax())
-//       return $template;
-//
-//       if (is_search())
-//         return $template;
-//
-//     if ( in_array( $post_type, $my_types ) )
-//         return get_stylesheet_directory() . '/page.php';
-//
-//     return $template;
-// });
+add_filter( 'template_include', function( $template )
+{
+    // your custom post types
+    $args = array(
+    'public'   => true,
+    '_builtin' => false
+    );
+
+    $post_type = get_post_type();
+
+    if(get_query_var( $post_type.'_tax' ))
+    {
+      $current_taxonomy = $post_type.'_tax';
+      $curr_tax_term = get_query_var( $current_taxonomy );
+
+      $term_object = get_term_by( 'slug', $curr_tax_term, $current_taxonomy, 'object' );
+
+      if($term_object->parent != 0)
+          return get_stylesheet_directory() . '/page.php';
+    }
+
+    // your custom post types
+    $args = array(
+    'public'   => true,
+    '_builtin' => true
+    );
+
+    $my_types = get_post_types( $args, 'names' );
+
+    if ( !in_array( $post_type, $my_types ) )
+        return get_stylesheet_directory() . '/page.php';
+
+    return $template;
+});
 
 //------ PAGINATION ------//
 

@@ -5,32 +5,69 @@
 
       <?php
 
-      $current_page = get_queried_object();
+        $term_object = new stdClass();
+        $show_menu = FALSE;
+        $post_type = get_post_type();
 
-      $terms = wp_get_post_terms( $current_page->ID, $current_page->post_type.'_tax' );
+        if(get_query_var( $post_type.'_tax' ))
+        {
+          $current_taxonomy = $post_type.'_tax';
+          $curr_tax_term = get_query_var( $current_taxonomy );
+          $page_object = get_queried_object();
+          //printme($page_object->post_name);
 
-      $hi_query = 0;
+          $term_object = get_term_by( 'slug', $curr_tax_term, $current_taxonomy, 'object' );
 
-      if(is_array($terms) && $terms[0]->parent != 0)
-      {
-        $args = array($terms[0]->taxonomy => $terms[0]->slug, 'orderby' => 'menu_order', 'order' => 'asc' );
-			  $hi_query = new WP_Query( $args );
+          $show_menu = $term_object->parent != 0 ? TRUE : FALSE;
+        }
+        elseif(get_query_var('name'))
+        {
+          $page_object = get_queried_object();
+          // printme($page_object->post_name);
 
-        // Count the total Posts
-  			$total_posts = count($hi_query->posts);
+          $current_taxonomy = $page_object->post_type.'_tax';
 
-  			$count = 0;
+          $current_tax_object = get_object_taxonomies( $post_type, 'names' );
+      		$post_terms = get_the_terms( get_the_ID(), $current_tax_object[0] );
+          $term_object = $post_terms[0];
 
-  			global $wp_query;
-  			// Put default query object in a temp variable
-  			$tmp_query = $wp_query;
-  			// Now wipe it out completely
-  			$wp_query = null;
-  			// Re-populate the global with our custom query
-  			$wp_query = $hi_query;
+          if(is_object($term_object))
+            $show_menu = $term_object->parent != 0 ? TRUE : FALSE;
+
+        }
+
+        if($show_menu == TRUE)
+        {
+
+          $args = array(
+            'posts_per_page' => 80, 'orderby' => 'date', 'order' => 'asc',
+          	'tax_query' => array(
+          		array(
+          			'taxonomy' => $current_taxonomy,
+          			'field' => 'slug',
+          			'terms' => $term_object->slug
+          		)
+          	)
+          );
+
+  			  $hi_query = new WP_Query( $args );
+
+          // Count the total Posts
+    			$total_posts = count($hi_query->posts);
+
+    			$count = 0;
+
+    			global $wp_query;
+
+    			// Put default query object in a temp variable
+    			$tmp_query = $wp_query;
+    			// Now wipe it out completely
+    			$wp_query = null;
+    			// Re-populate the global with our custom query
+    			$wp_query = $hi_query;
 
         ?>
-
+      <!-- THE MENU -->
       <div id="subpage-nav" class="two-up-grid">
 
         <?php if ( $hi_query->have_posts() ) : while ( $hi_query->have_posts() ) : $hi_query->the_post(); ?>
@@ -47,13 +84,17 @@
         <?php rewind_posts(); ?>
       </div>
 
-<?php } ?>
-
       <?php
+          // Re-populate the global query to its original setting
+          $wp_query = $tmp_query;
+        }
 
-      $args = array('post_type' => $current_page->post_type, 'page_id' => $current_page->ID );
-
-      query_posts( $args );
+        // We want to get the frst post that is related to this tax term
+        if(get_query_var( $post_type.'_tax' ))
+        {
+          $args['posts_per_page'] = 1;
+          query_posts( $args );
+        }
 
        ?>
       <article>
@@ -93,7 +134,7 @@
 
     <div class="right-column">
 
-      <?php dynamic_sidebar( 'news_sidebar' ); ?>
+      <?php dynamic_sidebar( 'content_sidebar' ); ?>
 
     </div>
   </div>
