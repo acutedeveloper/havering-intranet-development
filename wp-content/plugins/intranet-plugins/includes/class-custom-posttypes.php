@@ -64,7 +64,7 @@ $hi_cpts = array(
 	array(
 		'name' => 'About Havering',
 		'cpt_name' => 'hi_about_havering',
-		'cpt_slug' => 'about_havering',
+		'cpt_slug' => 'about-havering',
 		'cpt_taxonomy' => 'hi_about_havering_tax'
 	),
 );
