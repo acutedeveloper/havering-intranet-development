@@ -220,7 +220,11 @@ Class Content_menu_walker extends Walker_Nav_Menu
 				$output .= "<li>\n";
 			}
       $output .= "  <a href=".$link." ".$data." >".$object->title."</a>\n";
-      $output .= ( trim($object->post_content) == NULL ) ? NULL : "  <p>".$object->post_content."</p>\n";
+
+      if($this->hi_menu_level != 1)
+			{
+				$output .= ( trim($object->post_content) == NULL ) ? NULL : "  <p>".$object->post_content."</p>\n";
+			}
   }
 
   public function end_el( &$output, $object, $depth = 0, $args = array() )
