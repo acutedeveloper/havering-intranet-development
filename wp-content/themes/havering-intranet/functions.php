@@ -77,9 +77,21 @@ function my_jquery_enqueue() {
    wp_register_script('jquery', get_bloginfo('stylesheet_directory')."/library/js/jquery-2.0.0b2.js", false, null);
    wp_register_script('jquery-ui', get_bloginfo('stylesheet_directory')."/library/js/jquery-ui.js", false, null);
    wp_register_script('bxslider', get_bloginfo('stylesheet_directory')."/library/js/bxslider/jquery.bxslider.js", false, null);
+
    wp_enqueue_script('jquery');
    wp_enqueue_script('jquery-ui');
    wp_enqueue_script('bxslider');
+
+  // Add IE conditional
+  if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 8.') !== false)
+  {
+    echo "true";
+    wp_register_script('selectivizr', get_bloginfo('stylesheet_directory')."/library/js/selectivizr.js", false, null);
+    wp_register_script('modernizr', get_bloginfo('stylesheet_directory')."/library/js/modernizr-2.8.3.min.js", false, null);
+    wp_enqueue_script('selectivizr');
+    wp_enqueue_script('modernizr');
+  }
+
 }
 
 //------ ADD IMAGE SIZES ------//
@@ -105,13 +117,19 @@ function my_image_sizes($sizes) {
 
 add_filter( 'template_include', function( $template )
 {
-    // your custom post types
-    $args = array(
-    'public'   => true,
-    '_builtin' => false
-    );
+
+    if(is_404())
+      return $template;
 
     $post_type = get_post_type();
+
+    if('tribe_events' == $post_type || get_query_var('post_type') == 'tribe_events')
+      return $template;
+
+    $args = array(
+      'public'   => true,
+      '_builtin' => false
+    );
 
     if(get_query_var( $post_type.'_tax' ))
     {
@@ -123,6 +141,9 @@ add_filter( 'template_include', function( $template )
       if($term_object->parent != 0)
           return get_stylesheet_directory() . '/page.php';
     }
+
+    if('tribe_events' == $post_type || get_query_var('post_type') == 'tribe_events')
+      return $template;
 
     // your custom post types
     $args = array(
