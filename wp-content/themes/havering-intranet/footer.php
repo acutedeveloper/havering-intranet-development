@@ -12,7 +12,8 @@
     		$('.bxslider').bxSlider({
     			slideWidth: 700,
     			pager: false,
-    			auto: true
+    			auto: true,
+          preloadImages: 'all'
     		});
     	});
     </script>
