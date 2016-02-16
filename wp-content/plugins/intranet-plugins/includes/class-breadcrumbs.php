@@ -40,12 +40,20 @@ function the_breadcrumb()
 
 	if( is_search() )
 	{
-		echo 'search';
+		echo '<li>Search</li>';
+		echo '</ul>';
+		echo '</div>';
+		return;
 	}
 
-	if( $post_type == 'page' && !is_404() )
+	if('tribe_events' == $post_type || 'tribe_events' == get_query_var('post_type'))
 	{
-		echo '<li>'.the_title().'</li>';
+		echo '<li><a href="'.site_url().'/events">Events</a></li>';
+		//echo (get_query_var('eventDisplay') ? '<li>'.ucfirst(get_query_var('eventDisplay')).'</li>' : NULL);
+		echo (get_query_var('name') ? '<li>'.the_title().'</li>' : NULL);
+		echo '</ul>';
+		echo '</div>';
+		return;
 	}
 
 	if( $post_type == 'post' && !is_archive() )
@@ -54,13 +62,9 @@ function the_breadcrumb()
 		echo '<li>'.the_title().'</li>';
 	}
 
-	if('tribe_events' == $post_type)
+	if( is_page_template('page.php') )
 	{
-		echo '<li><a href="'.site_url().'/events">Events</a></li>';
-		echo (get_query_var('name') ? '<li>'.the_title().'</li>' : NULL);
-		echo '</ul>';
-		echo '</div>';
-		return;
+		echo '<li>'.the_title().'</li>';
 	}
 
 	if (get_query_var( $post_type.'_tax' ))
