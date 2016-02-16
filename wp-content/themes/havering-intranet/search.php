@@ -32,7 +32,7 @@
 				</div>
 			</div>
 
-		<?php endwhile; else : _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); endif; ?>
+		<?php endwhile; else : ?><h1><?php _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); ?></h1><?php endif; ?>
 			<?php //theme_pagination(); ?>
 	</div>
 
