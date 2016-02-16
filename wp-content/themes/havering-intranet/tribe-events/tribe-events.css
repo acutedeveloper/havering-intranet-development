@@ -3,5 +3,19 @@
 }
 
 #tribe-events-pg-template{
-  clear: left;  
+  clear: left;
+}
+
+
+.tribe-events-gcal{
+  float: none;
+}
+
+#tribe-events .tribe-events-button, .tribe-events-button
+{
+  float: none;
+}
+
+.tribe-events-meta-group{
+  padding: 0 !important;
 }
