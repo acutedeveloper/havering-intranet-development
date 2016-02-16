@@ -43,7 +43,7 @@ function the_breadcrumb()
 		echo 'search';
 	}
 
-	if( $post_type == 'page')
+	if( $post_type == 'page' && !is_404() )
 	{
 		echo '<li>'.the_title().'</li>';
 	}
@@ -52,6 +52,15 @@ function the_breadcrumb()
 	{
 		echo '<li><a href="'.site_url().'/news">News</a></li>';
 		echo '<li>'.the_title().'</li>';
+	}
+
+	if('tribe_events' == $post_type)
+	{
+		echo '<li><a href="'.site_url().'/events">Events</a></li>';
+		echo (get_query_var('name') ? '<li>'.the_title().'</li>' : NULL);
+		echo '</ul>';
+		echo '</div>';
+		return;
 	}
 
 	if (get_query_var( $post_type.'_tax' ))
@@ -86,6 +95,7 @@ function the_breadcrumb()
 			echo '<li><a href="'.$link.'">'.$current_post_type_object->label.'</a></li>';
 		}
 
+
 		if( get_query_var('name') )
 		{
 			$current_tax_object = get_object_taxonomies( $post_type, 'names' );
@@ -103,13 +113,6 @@ function the_breadcrumb()
 
 		}
 	}
-
-	// if(is_archive())
-	// {
-	// 	echo '<li>'.the_archive_title().'</li>';
-	// }
-
-		// if Single
 
 	echo '	</ul>';
 	echo '</div>';
