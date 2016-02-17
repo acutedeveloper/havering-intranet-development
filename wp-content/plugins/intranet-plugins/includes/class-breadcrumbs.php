@@ -56,6 +56,13 @@ function the_breadcrumb()
 		return;
 	}
 
+	// Add a link to the recent search results
+	$url = array_filter(explode("/", $_SERVER["HTTP_REFERER"]));
+	if(strpos(end($url),'?s') !== false)
+	{
+		echo '<li><a href="'.$_SERVER["HTTP_REFERER"].'">Search results</a></li>';
+	}
+
 	if( $post_type == 'post' && !is_archive() )
 	{
 		echo '<li><a href="'.site_url().'/news">News</a></li>';
