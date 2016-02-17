@@ -121,6 +121,9 @@ add_filter( 'template_include', function( $template )
     if(is_404())
       return $template;
 
+    if(is_search())
+      return $template;
+
     $post_type = get_post_type();
 
     if('tribe_events' == $post_type || get_query_var('post_type') == 'tribe_events')
@@ -170,6 +173,7 @@ function theme_pagination($pages = '', $range = 2)
     if($pages == '')
     {
       global $wp_query;
+
       $pages = $wp_query->max_num_pages;
 
       if(!$pages)

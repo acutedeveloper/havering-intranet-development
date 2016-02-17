@@ -2,12 +2,30 @@
 /**
 * Template Name: search
 */
- get_header(); ?>
+ get_header();
+
+ global $query_string;
+
+ $query_args = explode("&", $query_string);
+ $search_query = array();
+
+ if( strlen($query_string) > 0 ) {
+ 	foreach($query_args as $key => $string) {
+ 		$query_split = explode("=", $string);
+ 		$search_query[$query_split[0]] = urldecode($query_split[1]);
+ 	} // foreach
+ } //if
+
+ $search = new WP_Query($search_query);
+
+ global $wp_query;
+ $total_results = $wp_query->found_posts;
+
+ ?>
 
 <div class="three-quarters-grid">
 	<div class="left-column">
-
-		<h1 class="archive-title"><span><?php _e( 'Search Results for:', 'textdomain' ); ?></span> <?php echo esc_attr(get_search_query()); ?></h1>
+		<h1 class="archive-title"><span><?php _e( $total_results.' Search Results for:', 'textdomain' ); ?></span> <?php echo esc_attr(get_search_query()); ?></h1>
 
 		<hr/>
 
@@ -32,8 +50,10 @@
 				</div>
 			</div>
 
-		<?php endwhile; else : ?><h1><?php _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); ?></h1><?php endif; ?>
-			<?php //theme_pagination(); ?>
+		<?php endwhile; else : ?>
+      <h1><?php _e( 'Sorry, no posts matched your criteria.', 'textdomain' ); ?></h1>
+    <?php endif; ?>
+    <?php theme_pagination(); ?>
 	</div>
 
 	<div class="right-column">

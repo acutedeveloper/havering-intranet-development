@@ -16,8 +16,6 @@
         );
         query_posts($args);
 
-        $count = 0;
-
         if ( have_posts() ) : while ( have_posts() ) : the_post();
         if(is_sticky()):
       ?>
