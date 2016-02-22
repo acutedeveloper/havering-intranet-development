@@ -1,0 +1,58 @@
+@import url( 'library/css/main.css' );
+
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a {margin: 10px;}
+
+body#tinymce.wp-editor.h1 {
+  font-size: 2.25em;
+  line-height: 1.2;
+  margin-bottom: 13.33333px; }
+
+body#tinymce.wp-editor.h2 {
+  font-size: 1.5em;
+  line-height: 1.45;
+  margin-bottom: 13.33333px; }
+
+body#tinymce.wp-editor.h3 {
+  font-size: 1.3125em;
+  line-height: 1.48;
+  margin-bottom: 13.33333px; }
+
+body#tinymce.wp-editor.h4 {
+  font-size: 1.125em;
+  line-height: 1.555;
+  margin-bottom: 13.33333px; }
+
+body#tinymce.wp-editor.h5 {
+  font-size: 1em;
+  line-height: 1.625;
+  margin-bottom: 13.33333px; }
+
+body#tinymce.wp-editor.p {
+  font-size: 1em;
+  margin: 0 0 20px;
+  line-height: 1.625; }
+
+body#tinymce.wp-editor.strong {
+  font-weight: bold; }
+
+body#tinymce.wp-editor.em {
+  font-style: italic; }
+
+body#tinymce.wp-editor.small {
+  font-family: "montserratregular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8125em; }
+
+ul, ol{
+  margin-left: 25px;
+  padding: 0;
+  list-style: disc;
+  font-size: 1em;
+}
+
+article ul, article ol{
+  margin-left: 25px;
+  padding: 0;
+  list-style: disc;
+  font-size: 1em;
+}

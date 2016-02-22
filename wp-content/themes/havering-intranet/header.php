@@ -8,10 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="stylesheet" href="<?php bloginfo('stylesheet_directory'); ?>/library/css/main.css" media="all" />
+		<link rel="stylesheet" href="<?php bloginfo('stylesheet_directory'); ?>/style.css" media="all" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php bloginfo('stylesheet_directory'); ?>/library/js/bxslider/jquery.bxslider.css" media="all" />
-
-
 
 		<?php wp_head(); ?>
 	</head>

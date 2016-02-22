@@ -253,3 +253,10 @@ function get_mime_type_icon($mime_type)
     return 'fa-file-o';
   }
 }
+
+//------ ADD THEME STYLES TO EDITOR ------//
+
+function my_theme_add_editor_styles() {
+    add_editor_style( 'custom-editor-styles.css' );
+}
+add_action( 'admin_init', 'my_theme_add_editor_styles' );
