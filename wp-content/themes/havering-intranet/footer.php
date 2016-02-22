@@ -12,6 +12,8 @@
     		$('.bxslider').bxSlider({
     			slideWidth: 700,
     			pager: false,
+          speed: 2500,
+          pause: 16000,
     			auto: true,
           preloadImages: 'all'
     		});
