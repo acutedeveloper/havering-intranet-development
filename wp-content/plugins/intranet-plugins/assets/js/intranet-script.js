@@ -6,38 +6,6 @@ $( document ).ready(function() {
 
 });
 
-// For the breadcrumbs
-$( document ).on('click', '.menu-first-level', function (e){
-
-  // All this will do is hide the menu levels
-  if(thirdLevelMenu.css('display') == 'block' && secondLevelMenu.css('display') == 'block')
-  {
-    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
-    secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
-      secondLevelMenu.empty();
-      thirdLevelMenu.empty();
-    });
-  }
-  else if(secondLevelMenu.css('display') == 'block')
-  {
-      secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
-      secondLevelMenu.empty();
-    });
-  }
-
-});
-
-$( document ).on('click', '.menu-second-level', function (e){
-  e.preventDefault();
-
-  if(thirdLevelMenu.toggle('display') == 'block')
-  {
-    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
-      thirdLevelMenu.empty();
-    });
-  }
-});
-
 // Level 1 link clicked
 $(document).on( 'click', '.links-top-level ul li a', function(e) {
 
@@ -56,13 +24,15 @@ $(document).on( 'click', '.links-top-level ul li a', function(e) {
 
   if(thirdLevelMenu.is(':visible') && secondLevelMenu.is(':visible'))
   {
-      thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
-      secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
+    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
+    secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
 
       secondLevelMenu.empty();
       thirdLevelMenu.empty();
+      remove_crumb('li.menu-second-level');
+      remove_crumb('li.menu-third-level');
 
-      getSecondLevelMenu(menuSlug, menuItemId);
+      toggleSecondLevelMenu(menuSlug, menuItemId);
 
     });
   }
@@ -70,18 +40,20 @@ $(document).on( 'click', '.links-top-level ul li a', function(e) {
   {
       secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
       secondLevelMenu.empty();
-      getSecondLevelMenu(menuSlug, menuItemId);
+      remove_crumb('li.menu-second-level');
+      toggleSecondLevelMenu(menuSlug, menuItemId);
     });
 
   }
   else
   {
-    getSecondLevelMenu(menuSlug, menuItemId);
+    remove_crumb('li.menu-second-level');
+    toggleSecondLevelMenu(menuSlug, menuItemId);
   }
 
 });
 
-function getSecondLevelMenu(menuSlug, menuItemId)
+function toggleSecondLevelMenu(menuSlug, menuItemId)
 {
   $.ajax({
     type: "get",
@@ -102,8 +74,6 @@ function getSecondLevelMenu(menuSlug, menuItemId)
 $(document).on( 'click', '.links-second-level ul li a', function(e) {
 
   e.preventDefault();
-  // $(this).siblings().removeClass('active');
-  // $(this).addClass('active', 1000);
   $(this).closest('ul').children('.active').removeClass('active');
   $(this).closest('li').addClass('active', 100);
 
@@ -115,27 +85,30 @@ $(document).on( 'click', '.links-second-level ul li a', function(e) {
   }
 
   menuSlug = $(this).data( 'menu-slug' );
+  menuTax = $(this).data( 'tax-slug' );
 
   if(thirdLevelMenu.is(':visible'))
   {
     thirdLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
       thirdLevelMenu.empty();
-      toggleThirdLevel(menuSlug, menuItemId);
+      remove_crumb('li.menu-second-level');
+      toggleThirdLevel(menuSlug, menuItemId, menuTax);
     });
   }
   else
   {
-    toggleThirdLevel(menuSlug, menuItemId);
+    remove_crumb('li.menu-second-level');
+    toggleThirdLevel(menuSlug, menuItemId, menuTax);
   }
 
 });
 
-function toggleThirdLevel(menuSlug, menuItemId)
+function toggleThirdLevel(menuSlug, menuItemId, menuTax)
 {
   $.ajax({
     type: "get",
     dataType: "html",
-    data: { menu_item_id: menuItemId, menu: menuSlug, menu_level: 'level_three', action: 'get_menu_level' },
+    data: { menu_item_id: menuItemId, menu: menuSlug, tax: menuTax, menu_level: 'level_three', action: 'get_menu_level' },
     url: wp_js_object.ajax_url,
     success: function (data){
         // Add to div
@@ -144,9 +117,48 @@ function toggleThirdLevel(menuSlug, menuItemId)
         thirdLevelMenu.append(menuHtml);
         $( window ).width() < 768 ? secondLevelMenu.toggle('slide', { direction: 'left' }, 500) : "";
         thirdLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500);
+        add_crumb('menu-second-level', menuSlug);
         return;
     }
   });
+}
+
+//------ BREADCRUMBS ------//
+
+$(document).on( 'click', '.menu-second-level', function(e) {
+  e.preventDefault();
+
+  // Hide the third level
+  if(thirdLevelMenu.is(':visible'))
+  {
+    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500, function(){
+      thirdLevelMenu.empty();
+      $( window ).width() < 768 ? secondLevelMenu.toggle('slide', { direction: 'left' }, 500) : "";
+      remove_crumb('li.menu-second-level');
+    });
+  }
+});
+
+function remove_crumb(level)
+{
+
+  $('.breadcrumbs').children( level ).remove();
+  return;
+}
+
+function add_crumb(level, title)
+{
+  var random = Math.floor(Math.random() * (100 - 1)) + 1;
+  var newCrumb = $('<li>').addClass(level).html('<a href="#">'+ titleCase(title) + '</a>');
+  $('.breadcrumbs').append(newCrumb);
+  return;
+}
+
+function titleCase(str)
+{
+  var newstr = str.split("-");
+  newstr = newstr.join(" ");
+  return newstr.charAt(0).toUpperCase() + newstr.slice(1);
 }
 
 // Links description text show
@@ -161,21 +173,16 @@ $(document).on( 'mouseenter mouseleave', '.links-top-level ul li, .links-second-
 $( window ).resize(function() {
   if($( window ).width() < 768)
   {
-    console.log('small');
     if(thirdLevelMenu.css('display') == 'block')
     {
       secondLevelMenu.css( "display", "none" );
-      console.log('hide');
     }
-
   }
   else
   {
     if(thirdLevelMenu.css('display') == 'block')
     {
       secondLevelMenu.css( "display", "block" );
-      console.log('show');
     }
-    console.log('big');
   }
 });

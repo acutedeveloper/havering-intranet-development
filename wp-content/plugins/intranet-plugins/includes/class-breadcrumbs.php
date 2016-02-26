@@ -22,10 +22,6 @@ function get_taxonomy_parents($parent, $taxonomy, $menu_slug)
 			{
 				echo '<li><a href="'.$link.'">'.$parent_tax->name.'</a></li>';
 			}
-			else
-			{
-				echo '<li>'.$parent_tax->name.'</li>';
-			}
 		}
 	}
 }
@@ -49,11 +45,16 @@ function the_breadcrumb()
 	if('tribe_events' == $post_type || 'tribe_events' == get_query_var('post_type'))
 	{
 		echo '<li><a href="'.site_url().'/events">Events</a></li>';
-		//echo (get_query_var('eventDisplay') ? '<li>'.ucfirst(get_query_var('eventDisplay')).'</li>' : NULL);
-		echo (get_query_var('name') ? '<li>'.the_title().'</li>' : NULL);
 		echo '</ul>';
 		echo '</div>';
 		return;
+	}
+
+	// For the content menu
+	if(get_query_var( 'tax_id' ))
+	{
+		$title = ucfirst(str_replace("-", " ", get_query_var('menu')));
+		echo '<li><a href="'.site_url().'/menu/'.get_query_var('menu').'">'.$title.'</a></li>';
 	}
 
 	// Add a link to the recent search results
@@ -63,15 +64,9 @@ function the_breadcrumb()
 		echo '<li><a href="'.$_SERVER["HTTP_REFERER"].'">Search results</a></li>';
 	}
 
-	if( $post_type == 'post' && !is_archive() )
+	if( $post_type == 'post' && !is_archive() && !get_query_var( 'menu' ) )
 	{
 		echo '<li><a href="'.site_url().'/news">News</a></li>';
-		echo '<li>'.the_title().'</li>';
-	}
-
-	if( is_page_template('page.php') )
-	{
-		echo '<li>'.the_title().'</li>';
 	}
 
 	if (get_query_var( $post_type.'_tax' ))
@@ -120,7 +115,6 @@ function the_breadcrumb()
 					get_taxonomy_parents($term, $term->taxonomy, $current_post_type_object->rewrite['slug']);
 				}
 			}
-			echo '<li>'.the_title().'</li>';
 
 		}
 	}
