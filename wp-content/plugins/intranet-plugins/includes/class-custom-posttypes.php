@@ -50,7 +50,7 @@ $hi_cpts = array(
 		'cpt_taxonomy' => 'hi_committee_serv_tax'
 	),
 	array(
-		'name' => 'Health & Safety',
+		'name' => 'Health and Safety',
 		'cpt_name' => 'hi_health_safety',
 		'cpt_slug' => 'health-and-safety',
 		'cpt_taxonomy' => 'hi_health_safety_tax'

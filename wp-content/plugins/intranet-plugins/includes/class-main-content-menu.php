@@ -97,21 +97,44 @@ function get_menu_level()
 	$gump = new GUMP();
 	$sanitized_data = $gump->sanitize($_REQUEST);
 
-	//printme($_GET);
+	// printme($_GET);
 
 	// Get the post_type
 	$menu_slug = $sanitized_data['menu'];
 	$menu_item_id = $sanitized_data['menu_item_id'];
 	$menu_level = $sanitized_data['menu_level'];
 
+	$taxonomy = 'hi_'.str_replace("-","_", $menu_slug).'_tax';
+
+	// Because cpts cannot be more than 20 characters we need to filter for
+	// these custom post types that have truncated names
+	if($menu_slug == "health-and-safety")
+	{
+		$cpt = new stdClass();
+		$cpt->label = 'Health and Safety';
+		$taxonomy = 'hi_health_safety_tax';
+	}
+	else if($menu_slug == "committee-services")
+	{
+		$cpt = new stdClass();
+		$cpt->label = 'Committee Services';
+		$taxonomy = 'hi_committee_service_tax';
+	}
+	else
+	{
+		$cpt = get_post_type_object( 'hi_'.str_replace("-","_", $menu_slug) );
+	}
+
 	// depending on the value
 	if($menu_level == 'level_two')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(2, $menu_slug), 'container' => false ) );
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'walker' => new Content_menu_walker(2, $menu_slug), 'container' => false, 'items_wrap' => '<h3>'.$cpt->label.'</h3><ul>%3$s</ul>' ) );
 	}
 	elseif ($menu_level == 'level_three')
 	{
-		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(3, $menu_slug), 'container' => false) );
+		$tax_slug = $sanitized_data['tax'];
+		$term = get_term_by( 'slug', $tax_slug, $taxonomy );
+		wp_nav_menu( array('theme_location'=> $menu_slug, 'depth' => 1, 'level' => 2, 'child_of' => (int)$menu_item_id, 'walker' => new Content_menu_walker(3, $menu_slug), 'container' => false, 'items_wrap' => '<h3>'.$term->name.'</h3><ul>%3$s</ul>',) );
 	}
 	die();
 }
@@ -187,8 +210,11 @@ Class Content_menu_walker extends Walker_Nav_Menu
       if($depth >= 1)
         return;
 
+			// printme($object);
+
       $data = 'data-menu-item-id="'.$object->ID.'"';
       $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : $this->hi_menu_slug).'" ';
+			$data .= ' data-tax-slug="'.sanitize_title($object->title).'"';
 
       if($object->type == 'post_type')
       {
