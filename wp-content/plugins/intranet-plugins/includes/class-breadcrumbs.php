@@ -14,7 +14,8 @@ function get_taxonomy_parents($parent, $taxonomy, $menu_slug)
 
 	foreach($menu_items as $item)
 	{
-		if($parent_tax->slug == sanitize_title($item->title))
+
+		if($parent_tax->slug == sanitize_title($item->title) && $item->type == 'taxonomy')
 		{
 			$link = site_url().'/menu/'.$menu_slug.'/'.$item->ID.'/'.$parent_tax->slug;
 
