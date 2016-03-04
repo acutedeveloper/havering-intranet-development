@@ -260,3 +260,72 @@ function my_theme_add_editor_styles() {
     add_editor_style( 'custom-editor-styles.css' );
 }
 add_action( 'admin_init', 'my_theme_add_editor_styles' );
+
+
+//------ TEECCC ------//
+
+if ( class_exists( '\\Fragen\\Category_Colors\\Main' ) ) {
+
+  // The following functions generate css styles from the
+  // event calendar category colors which allow the coloring of the
+  // calendar labels
+
+  function adjustBrightness($hex, $steps) {
+      // Steps should be between -255 and 255. Negative = darker, positive = lighter
+      $steps = max(-255, min(255, $steps));
+
+      // Normalize into a six character long hex string
+      $hex = str_replace('#', '', $hex);
+      if (strlen($hex) == 3) {
+          $hex = str_repeat(substr($hex,0,1), 2).str_repeat(substr($hex,1,1), 2).str_repeat(substr($hex,2,1), 2);
+      }
+
+      // Split into three parts: R, G and B
+      $color_parts = str_split($hex, 2);
+      $return = '#';
+
+      foreach ($color_parts as $color) {
+          $color   = hexdec($color); // Convert to decimal
+          $color   = max(0,min(255,$color + $steps)); // Adjust color
+          $return .= str_pad(dechex($color), 2, '0', STR_PAD_LEFT); // Make two char hex code
+      }
+
+      return $return;
+  }
+
+  function add_custom_styles()
+  {
+    $options = get_option( 'teccc_options' );
+
+    wp_enqueue_style(
+       'custom-style',
+        get_template_directory_uri() . 'style.css'
+    );
+
+    $custom_css = "";
+
+    foreach ($options['terms'] as $term) {
+
+      $bg_color = $options[$term[0].'-border'];
+
+      $custom_css .= '
+      .gradient-'.$term[0].' {
+      background-color: '.$bg_color.';
+      background: -webkit-linear-gradient('.adjustBrightness($bg_color, -40).', '.$bg_color.');
+      background: -o-linear-gradient('.adjustBrightness($bg_color, -40).', '.$bg_color.');
+      background: -moz-linear-gradient('.adjustBrightness($bg_color, -40).', '.$bg_color.');
+      background: linear-gradient('.adjustBrightness($bg_color, -40).', '.$bg_color.');
+      background-repeat: repeat-x;
+      filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=\'#FFA25F00\', endColorstr=\'#FFEE8C00\', GradientType=0)";
+      }
+      .text-'.$term[0].'{
+        color: '.$bg_color.'
+      }';
+
+    }
+
+    wp_add_inline_style( 'custom-style', $custom_css );
+  }
+  add_action( 'wp_enqueue_scripts', 'add_custom_styles' );
+
+}
