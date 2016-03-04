@@ -73,6 +73,7 @@
 				network: 'havering.gov.uk',
 				config:
 				{
+					use_sso: true, // this line enables SSO
 					header: false,
 					footer: false
 				}
