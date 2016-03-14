@@ -7,54 +7,65 @@ $( document ).ready(function() {
 });
 
 // Level 1 link clicked
-$(document).on( 'click', '.links-top-level ul li a', function(e) {
+  $(document).on( 'click', '.links-top-level ul li', levelOneClicked );
 
-  e.preventDefault();
-  $(this).closest('ul').children('.active').removeClass('active');
-  $(this).closest('li').addClass('active', 100);
+  function levelOneClicked(e){
 
-  menuItemId = $(this).data( 'menu-item-id' );
-  if(!menuItemId)
-  {
-    window.location.assign($(this).attr('href'));
-    return;
-  }
+    $(document).off( 'click', '.links-top-level ul li', levelOneClicked );
 
-  menuSlug = $(this).data( 'menu-slug' );
+    var linkButton = $(this);
 
-  if(thirdLevelMenu.is(':visible') && secondLevelMenu.is(':visible'))
-  {
-    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
-    secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
+    linkButton.closest('ul').children('.active').removeClass('active');
+    linkButton.addClass('active', 100);
 
-      secondLevelMenu.empty();
-      thirdLevelMenu.empty();
+    menuItemId = linkButton.find('a').data( 'menu-item-id' );
+
+    if(!menuItemId)
+      return;
+
+    menuExternalLink = linkButton.find('a').data( 'menu-external-link' );
+
+    if(!menuExternalLink)
+      return;
+
+    e.preventDefault();
+
+    menuSlug = linkButton.find('a').data( 'menu-slug' );
+
+    if(thirdLevelMenu.is(':visible') && secondLevelMenu.is(':visible'))
+    {
+      thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
+      secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
+
+        secondLevelMenu.empty();
+        thirdLevelMenu.empty();
+        remove_crumb('li.menu-second-level');
+        remove_crumb('li.menu-third-level');
+
+        toggleSecondLevelMenu(menuSlug, menuItemId);
+
+      });
+    }
+    else if(secondLevelMenu.is(':visible'))
+    {
+        secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
+        secondLevelMenu.empty();
+        remove_crumb('li.menu-second-level');
+        toggleSecondLevelMenu(menuSlug, menuItemId);
+      });
+
+    }
+    else
+    {
       remove_crumb('li.menu-second-level');
-      remove_crumb('li.menu-third-level');
-
       toggleSecondLevelMenu(menuSlug, menuItemId);
-
-    });
-  }
-  else if(secondLevelMenu.is(':visible'))
-  {
-      secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
-      secondLevelMenu.empty();
-      remove_crumb('li.menu-second-level');
-      toggleSecondLevelMenu(menuSlug, menuItemId);
-    });
+    }
 
   }
-  else
-  {
-    remove_crumb('li.menu-second-level');
-    toggleSecondLevelMenu(menuSlug, menuItemId);
-  }
-
-});
 
 function toggleSecondLevelMenu(menuSlug, menuItemId)
 {
+
   $.ajax({
     type: "get",
     dataType: "html",

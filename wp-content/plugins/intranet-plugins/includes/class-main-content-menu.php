@@ -210,15 +210,20 @@ Class Content_menu_walker extends Walker_Nav_Menu
       if($depth >= 1)
         return;
 
-			// printme($object);
 
-      $data = 'data-menu-item-id="'.$object->ID.'"';
+			$data = 'data-menu-item-id="'.$object->ID.'"';
+			$data .= 'data-menu-item-type="'.$object->type.'"';
       $data .= ' data-menu-slug="'.($object->object == 'custom' ? sanitize_title($object->title) : $this->hi_menu_slug).'" ';
 			$data .= ' data-tax-slug="'.sanitize_title($object->title).'"';
 
+			// Classes for the li items
+			$icon_class = "";
+			$active_class = "";
+
       if($object->type == 'post_type')
       {
-        $link = get_permalink($object->object_id);
+				$icon_class = 'page';
+				$link = get_permalink($object->object_id);
         $data = "";
       }
       elseif($object->type == 'taxonomy')
@@ -234,17 +239,28 @@ Class Content_menu_walker extends Walker_Nav_Menu
       }
       else
       {
-        $link = site_url().'/menu/'.$object->post_name;
+				//printme($object);
+
+				$find_url = strpos($object->url, site_url());
+
+				if($find_url !== false)
+				{
+					$link = site_url().'/menu/'.$object->post_name;
+				}
+				else
+				{
+					$data = "target=\"$object->target\"";
+					$data .= ' data-external-link="true"';
+					$link = $object->url;
+				}
       }
 
 			if( trim($this->hi_menu_slug) == trim($object->post_name) )
 			{
-				$output .= "<li class=\"active\">\n";
+				$active_class = 'active';
 			}
-			else
-			{
-				$output .= "<li>\n";
-			}
+
+			$output .= "<li class=\"$active_class $icon_class\">\n";
       $output .= "  <a href=".$link." ".$data." >".$object->title."</a>\n";
 
       if($this->hi_menu_level != 1)
