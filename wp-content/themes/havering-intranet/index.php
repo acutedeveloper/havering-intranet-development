@@ -26,7 +26,11 @@
 	        if(is_sticky()):
 	      ?>
 					<div class="left-column">
-						<?php if ( has_post_thumbnail() ) { the_post_thumbnail(); } ?>
+						<?php if ( has_post_thumbnail() ) {
+							$thumb_id = get_post_thumbnail_id();
+							$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'square', true);
+							echo '<img src="'.$thumb_url_array[0].'" />';
+						} ?>
 						<div class="block block-headline">
 								<h2 class="text-havering-blue">
 									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>

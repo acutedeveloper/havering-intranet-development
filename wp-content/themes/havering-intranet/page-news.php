@@ -25,7 +25,9 @@
                 if ( has_post_thumbnail() )
                 {
                   echo '<div class="b-thumb">';
-                  the_post_thumbnail();
+                  $thumb_id = get_post_thumbnail_id();
+                  $thumb_url_array = wp_get_attachment_image_src($thumb_id, 'square', true);
+                  echo '<img src="'.$thumb_url_array[0].'" />';
                   echo '</div>';
                 }
           ?>
