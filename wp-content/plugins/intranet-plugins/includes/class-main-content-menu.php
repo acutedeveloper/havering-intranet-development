@@ -165,18 +165,37 @@ Class Homepage_menu_walker extends Walker
   // Set the properties of the element which give the ID of the current item and its parent
   public function start_el( &$output, $object, $depth = 0, $args = array(), $current_object_id = 0 )
   {
-      //echo "<pre>"; print_r($object); echo "</pre>";
+			$data = '';
       $output .= (self::$element_position % 4 == 1) ? "<div class=\"four-up-grid\">\n": "" ;
       $output .= "<div class=\"grid-item\">\n";
 			if( 'events' == $object->post_name || 'news' == $object->post_name)
 			{
 				$link = site_url().'/'.$object->post_name;
 			}
+
+			if ($object->type == 'post_type')
+			{
+				$link = $object->url;
+			}
 			else
 			{
-				$link = ( $object->object == 'page') ? get_page_link ( $object->object_id ) : site_url().'/menu/'.$object->post_name;
+				// Custom links
+
+				$find_url = strpos($object->url, site_url());
+
+				if($find_url !== false)
+				{
+					$link = site_url().'/menu/'.$object->post_name;
+				}
+				else
+				{
+					$data = "target=\"$object->target\"";
+					$data .= ' data-external-link="true"';
+					$link = $object->url;
+				}
+
 			}
-      $output .= "  <h3><a href=".$link.">".$object->title."</a></h3>\n";
+      $output .= "  <h3><a href=".$link." ".$data." >".$object->title."</a></h3>\n";
       $output .= ( $object->post_content == "" ) ? "" : "  <p>".$object->post_content."</p>\n";
   }
 
