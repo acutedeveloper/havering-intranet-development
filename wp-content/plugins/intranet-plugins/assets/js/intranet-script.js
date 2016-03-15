@@ -6,62 +6,66 @@ $( document ).ready(function() {
 
 });
 
+function inactive(e){
+  e.preventDefault();
+}
+
 // Level 1 link clicked
-  $(document).on( 'click', '.links-top-level ul li', levelOneClicked );
+$(document).on( 'click', '.links-top-level ul li', levelOneClicked );
 
-  function levelOneClicked(e){
+function levelOneClicked(e){
 
-    $(document).off( 'click', '.links-top-level ul li', levelOneClicked );
+  e.preventDefault();
+  var linkButton = $(this);
+  linkButton.closest('ul').children('.active').removeClass('active');
+  linkButton.addClass('active', 100);
 
-    var linkButton = $(this);
+  // If the link is to a page or external link
+  menuItemId = linkButton.find('a').data( 'menu-item-id' );
+  if(!menuItemId)
+  {
+    var linkTarget = linkButton.find('a').attr('target') ? '_blank' : '_self';
+    var linkUrl = linkButton.find('a').attr('href');
+    window.open(linkUrl, linkTarget);
+    return;
+  }
 
-    linkButton.closest('ul').children('.active').removeClass('active');
-    linkButton.addClass('active', 100);
+  menuSlug = linkButton.find('a').data( 'menu-slug' );
 
-    menuItemId = linkButton.find('a').data( 'menu-item-id' );
+  // This is to disable the double clicks
+  $(document).off( 'click', '.links-top-level ul li', levelOneClicked );
+  $(document).on( 'click', '.links-top-level ul li', inactive );
 
-    if(!menuItemId)
-      return;
+  if(thirdLevelMenu.is(':visible') && secondLevelMenu.is(':visible'))
+  {
+    thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
+    secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
 
-    menuExternalLink = linkButton.find('a').data( 'menu-external-link' );
+      secondLevelMenu.empty();
+      thirdLevelMenu.empty();
+      remove_crumb('li.menu-second-level');
+      remove_crumb('li.menu-third-level');
 
-    if(!menuExternalLink)
-      return;
+      toggleSecondLevelMenu(menuSlug, menuItemId);
 
-    e.preventDefault();
-
-    menuSlug = linkButton.find('a').data( 'menu-slug' );
-
-    if(thirdLevelMenu.is(':visible') && secondLevelMenu.is(':visible'))
-    {
-      thirdLevelMenu.toggle('slide', { direction: 'left' }, 500);
-      secondLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
-
-        secondLevelMenu.empty();
-        thirdLevelMenu.empty();
-        remove_crumb('li.menu-second-level');
-        remove_crumb('li.menu-third-level');
-
-        toggleSecondLevelMenu(menuSlug, menuItemId);
-
-      });
-    }
-    else if(secondLevelMenu.is(':visible'))
-    {
-        secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
-        secondLevelMenu.empty();
-        remove_crumb('li.menu-second-level');
-        toggleSecondLevelMenu(menuSlug, menuItemId);
-      });
-
-    }
-    else
-    {
+    });
+  }
+  else if(secondLevelMenu.is(':visible'))
+  {
+      secondLevelMenu.toggle('slide', { direction: 'left' }, 500, function (){
+      secondLevelMenu.empty();
       remove_crumb('li.menu-second-level');
       toggleSecondLevelMenu(menuSlug, menuItemId);
-    }
+    });
 
   }
+  else
+  {
+    remove_crumb('li.menu-second-level');
+    toggleSecondLevelMenu(menuSlug, menuItemId);
+  }
+
+}
 
 function toggleSecondLevelMenu(menuSlug, menuItemId)
 {
@@ -74,29 +78,42 @@ function toggleSecondLevelMenu(menuSlug, menuItemId)
     success: function (data){
         // Add to div
         var menuHtml = $('<ul>').html(data);
-        secondLevelMenu.append(menuHtml);
-        secondLevelMenu.toggle('slide', { direction: 'left' }, 500);
+        if ( secondLevelMenu.empty() ) {
+          secondLevelMenu.append(menuHtml);
+          secondLevelMenu.toggle('slide', { direction: 'left' }, 500);
+        }
+        $(document).off( 'click', '.links-top-level ul li', inactive );
+        $(document).on( 'click', '.links-top-level ul li', levelOneClicked );
         return;
     }
   });
 }
 
 // Level 2 link clicked
-$(document).on( 'click', '.links-second-level ul li a', function(e) {
+$(document).on( 'click', '.links-second-level ul li a', levelTwoClicked );
+
+function levelTwoClicked(e) {
 
   e.preventDefault();
   $(this).closest('ul').children('.active').removeClass('active');
   $(this).closest('li').addClass('active', 100);
 
+  // If the link is to a page or external link
   menuItemId = $(this).data( 'menu-item-id' );
   if(!menuItemId)
   {
-    window.location.assign($(this).attr('href'));
+    var linkTarget = $(this).attr('target') ? '_blank' : '_self';
+    var linkUrl = $(this).attr('href');
+    window.open(linkUrl, linkTarget);
     return;
   }
 
   menuSlug = $(this).data( 'menu-slug' );
   menuTax = $(this).data( 'tax-slug' );
+
+  // This is to disable the double clicks
+  $(document).off( 'click', '.links-second-level ul li a', levelTwoClicked );
+  $(document).on( 'click', '.links-second-level ul li a', inactive );
 
   if(thirdLevelMenu.is(':visible'))
   {
@@ -112,7 +129,7 @@ $(document).on( 'click', '.links-second-level ul li a', function(e) {
     toggleThirdLevel(menuSlug, menuItemId, menuTax);
   }
 
-});
+}
 
 function toggleThirdLevel(menuSlug, menuItemId, menuTax)
 {
@@ -125,10 +142,15 @@ function toggleThirdLevel(menuSlug, menuItemId, menuTax)
         // Add to div
         var ulContainer = '<ul id="mdddenu-'+menuSlug+'" clas="menu">';
         var menuHtml = $(ulContainer).html(data);
-        thirdLevelMenu.append(menuHtml);
-        $( window ).width() < 768 ? secondLevelMenu.toggle('slide', { direction: 'left' }, 500) : "";
-        thirdLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500);
-        add_crumb('menu-second-level', menuSlug);
+        if ( thirdLevelMenu.empty() ) {
+          thirdLevelMenu.append(menuHtml);
+          $( window ).width() < 768 ? secondLevelMenu.toggle('slide', { direction: 'left' }, 500) : "";
+          thirdLevelMenu.delay(500).toggle('slide', { direction: 'left' }, 500, function(){
+            $(document).off( 'click', '.links-second-level ul li a', inactive );
+            $(document).on( 'click', '.links-second-level ul li a', levelTwoClicked );
+          });
+          add_crumb('menu-second-level', menuSlug);
+        }
         return;
     }
   });
