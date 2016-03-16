@@ -99,7 +99,7 @@ function my_jquery_enqueue() {
 if ( function_exists( 'add_image_size' ) ) {
     add_image_size( 'landscape-4x3', 600, 450 );
     add_image_size( 'landscape-16x9', 1280, 720 );
-    add_image_size( 'square', 600, 600, array( 'left', 'top' ) );
+    add_image_size( 'square', 750, 750, array( 'left', 'top' ) );
 }
 
 add_filter('image_size_names_choose', 'my_image_sizes');
