@@ -72,7 +72,7 @@ if ( isset( $posts ) && $posts ) : ?>
 			<?php do_action( 'tribe_events_list_widget_after_the_event_title' ); ?>
 
 			<?php do_action( 'tribe_events_list_widget_before_the_meta' ) ?>
-			<p><?php echo tribe_get_start_date(); ?></p>
+			<p><?php echo tribe_get_start_date( null, true, 'j F Y - g:i a') . (tribe_get_end_time ( null, 'g:i a') == '' ? '' : ' to '.tribe_get_end_time ( null, 'g:i a')); ?></p>
 			<a href="<?php echo esc_url( tribe_get_event_link() ); ?>">Read more <i class="fa fa-chevron-circle-right"></i></a>
 		</div>
 		<!-- THIS IS THE BLOCK -->
