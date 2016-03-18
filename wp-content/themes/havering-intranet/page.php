@@ -123,8 +123,10 @@
 
     		<?php endif; ?>
 
+      <div class="byline">
         <?php echo '<p>This page is maintained by: '.get_the_author_meta('user_firstname').' '.get_the_author_meta('user_lastname').' – <a href="mailto:'.get_the_author_meta('email').'">'.get_the_author_meta('email').'</a>'; ?>
         <?php echo '<br>Last updated: '.get_the_modified_date(  ).'</p>'; ?>
+      </div>
 
       <?php endwhile; else : ?>
         <p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
