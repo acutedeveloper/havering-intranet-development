@@ -10,9 +10,6 @@
           <time datetime="<?php echo get_the_date('Y-d-jTh:i:s'); ?>">Posted on: <?php echo get_the_date(); ?></time>
           <?php the_content(); ?>
 
-        <?php endwhile; else : ?>
-        	<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
-        <?php endif; ?>
 
         <?php if( have_rows('file_resources') ): ?>
     		<h2>File downloads</h2>
@@ -33,6 +30,14 @@
     		<?php else: ?>
 
     		<?php endif; ?>
+
+        <?php echo '<p>This story was published by: '.get_the_author_meta('user_firstname').' '.get_the_author_meta('user_lastname').' – <a href="mailto:'.get_the_author_meta('email').'">'.get_the_author_meta('email').'</a>'; ?>
+        <?php echo '<br>Last updated: '.get_the_modified_date(  ).'</p>'; ?>
+
+      <?php endwhile; else : ?>
+        <p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
+      <?php endif; ?>
+
       </article>
 
     </div>
